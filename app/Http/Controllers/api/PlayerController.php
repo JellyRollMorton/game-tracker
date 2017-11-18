@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\api;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class PlayerController extends Controller
 {
@@ -80,10 +81,5 @@ class PlayerController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function search()
-    {
-        return view('test');
     }
 }

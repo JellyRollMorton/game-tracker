@@ -12,5 +12,7 @@
 */
 
 Route::get('/', 'DashboardController@show');
+Route::get('api/players', 'api/PlayerController@search');
+Route::apiResource('photo', 'PhotoController');
 Route::resource('players', 'PlayerController');
 Route::resource('games', 'GameController');
