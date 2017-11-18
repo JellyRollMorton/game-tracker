@@ -13,8 +13,8 @@
 
         <form>
           <div class="form-group">
-            <label for="addPlayerModalName">Player Name</label>
-            <input type="text" class="form-control" id="addPlayerModalName">
+            <label for="add-player-modal-name">Player Name</label>
+            <input type="text" class="form-control" id="add-player-modal-name">
           </div>
         </form>
 
@@ -32,19 +32,18 @@
 <script>
     export default {
         mounted() {
-            console.log('Component mounted.')            
+            console.log('Component mounted.')
         },
         methods: {
             addPlayerButtonClick: function(event) {
-              var name = $('#addPlayerModalName').val();
+                var name = $('#add-player-modal-name').val();
 
-              $.post( "/api/players", { 
-                  name: name })
-                .done(function( data ) {
-                  $('#add-player-modal').modal('hide');
-                });
-
-                
+                $.post("/api/players", {
+                        name: name
+                    })
+                    .done(function(data) {
+                        $('#add-player-modal').modal('hide');
+                    });
             }
         }
     }

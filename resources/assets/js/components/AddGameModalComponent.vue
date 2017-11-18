@@ -26,7 +26,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" v-on:click="addGameButtonClick" class="btn btn-primary">Save changes</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -45,7 +45,6 @@
         },
         methods: {
             enablePlayerSearchSelect2: function(selectElement) {
-
                 selectElement.select2({
                     width: '100%',
                     ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
@@ -67,6 +66,17 @@
                     },
                     theme: "bootstrap"
                 });
+            },
+            addGameButtonClick: function(event) {
+                var player1Id = $('#player1-select').val();
+                var player2Id = $('#player2-select').val();
+
+                $.post("/api/games", {
+                        players : [player1Id, player2Id]
+                    })
+                    .done(function(data) {
+                        $('#add-game-modal').modal('hide');
+                    });
             }
         }
     }

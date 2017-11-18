@@ -43983,7 +43983,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         enablePlayerSearchSelect2: function enablePlayerSearchSelect2(selectElement) {
-
             selectElement.select2({
                 width: '100%',
                 ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
@@ -44006,6 +44005,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 },
                 theme: "bootstrap"
             });
+        },
+        addGameButtonClick: function addGameButtonClick(event) {
+            var player1Id = $('#player1-select').val();
+            var player2Id = $('#player2-select').val();
+
+            $.post("/api/games", {
+                players: [player1Id, player2Id]
+            }).done(function (data) {
+                $('#add-game-modal').modal('hide');
+            });
         }
     }
 });
@@ -44018,90 +44027,92 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0, false, false)
+  return _c(
+    "div",
+    { staticClass: "modal fade", attrs: { id: "add-game-modal" } },
+    [
+      _c("div", { staticClass: "modal-dialog", attrs: { role: "document" } }, [
+        _c("div", { staticClass: "modal-content" }, [
+          _vm._m(0, false, false),
+          _vm._v(" "),
+          _vm._m(1, false, false),
+          _vm._v(" "),
+          _c("div", { staticClass: "modal-footer" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary",
+                attrs: { type: "button" },
+                on: { click: _vm.addGameButtonClick }
+              },
+              [_vm._v("Save changes")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-secondary",
+                attrs: { type: "button", "data-dismiss": "modal" }
+              },
+              [_vm._v("Close")]
+            )
+          ])
+        ])
+      ])
+    ]
+  )
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "modal fade", attrs: { id: "add-game-modal" } },
-      [
-        _c(
-          "div",
-          { staticClass: "modal-dialog", attrs: { role: "document" } },
-          [
-            _c("div", { staticClass: "modal-content" }, [
-              _c("div", { staticClass: "modal-header" }, [
-                _c("h4", { staticClass: "modal-title" }, [_vm._v("Add Game")]),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "close",
-                    attrs: {
-                      type: "button",
-                      "data-dismiss": "modal",
-                      "aria-label": "Close"
-                    }
-                  },
-                  [
-                    _c("span", { attrs: { "aria-hidden": "true" } }, [
-                      _vm._v("×")
-                    ])
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-body" }, [
-                _c("form", [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "player1-select" } }, [
-                      _vm._v("Player 1")
-                    ]),
-                    _vm._v(" "),
-                    _c("select", {
-                      staticClass: "form-control",
-                      attrs: { id: "player1-select" }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "player2-select" } }, [
-                      _vm._v("Player 2")
-                    ]),
-                    _vm._v(" "),
-                    _c("select", {
-                      staticClass: "form-control",
-                      attrs: { id: "player2-select" }
-                    })
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-footer" }, [
-                _c(
-                  "button",
-                  { staticClass: "btn btn-primary", attrs: { type: "button" } },
-                  [_vm._v("Save changes")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-secondary",
-                    attrs: { type: "button", "data-dismiss": "modal" }
-                  },
-                  [_vm._v("Close")]
-                )
-              ])
-            ])
-          ]
-        )
-      ]
-    )
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h4", { staticClass: "modal-title" }, [_vm._v("Add Game")]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-body" }, [
+      _c("form", [
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", { attrs: { for: "player1-select" } }, [
+            _vm._v("Player 1")
+          ]),
+          _vm._v(" "),
+          _c("select", {
+            staticClass: "form-control",
+            attrs: { id: "player1-select" }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", { attrs: { for: "player2-select" } }, [
+            _vm._v("Player 2")
+          ]),
+          _vm._v(" "),
+          _c("select", {
+            staticClass: "form-control",
+            attrs: { id: "player2-select" }
+          })
+        ])
+      ])
+    ])
   }
 ]
 render._withStripped = true
@@ -44206,10 +44217,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         addPlayerButtonClick: function addPlayerButtonClick(event) {
-            var name = $('#addPlayerModalName').val();
+            var name = $('#add-player-modal-name').val();
 
             $.post("/api/players", {
-                name: name }).done(function (data) {
+                name: name
+            }).done(function (data) {
                 $('#add-player-modal').modal('hide');
             });
         }
@@ -44288,13 +44300,13 @@ var staticRenderFns = [
     return _c("div", { staticClass: "modal-body" }, [
       _c("form", [
         _c("div", { staticClass: "form-group" }, [
-          _c("label", { attrs: { for: "addPlayerModalName" } }, [
+          _c("label", { attrs: { for: "add-player-modal-name" } }, [
             _vm._v("Player Name")
           ]),
           _vm._v(" "),
           _c("input", {
             staticClass: "form-control",
-            attrs: { type: "text", id: "addPlayerModalName" }
+            attrs: { type: "text", id: "add-player-modal-name" }
           })
         ])
       ])
