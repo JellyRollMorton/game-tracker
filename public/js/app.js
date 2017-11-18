@@ -43972,42 +43972,41 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
         console.log('Component mounted.');
 
-        $("#player1-select").select2({
-            width: '100%',
-            ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
-                url: "/api/players/search",
-                dataType: 'json',
-                quietMillis: 250,
-                language: {
-                    errorLoading: function errorLoading() {
-                        return "Searching!";
-                    }
+        this.enablePlayerSearchSelect2($("#player1-select"));
+        this.enablePlayerSearchSelect2($("#player2-select"));
+    },
+
+    methods: {
+        enablePlayerSearchSelect2: function enablePlayerSearchSelect2(selectElement) {
+
+            selectElement.select2({
+                width: '100%',
+                ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
+                    url: "/api/players/search",
+                    dataType: 'json',
+                    quietMillis: 250,
+                    data: function data(term, page) {
+                        return {
+                            q: term // search term
+                        };
+                    },
+                    results: function results(data, page) {
+                        // parse the results into the format expected by Select2.
+                        // since we are using custom formatting functions we do not need to alter the remote JSON data
+                        return {
+                            results: data.items
+                        };
+                    },
+                    cache: true
                 },
-                data: function data(term, page) {
-                    return {
-                        q: term // search term
-                    };
-                },
-                results: function results(data, page) {
-                    // parse the results into the format expected by Select2.
-                    // since we are using custom formatting functions we do not need to alter the remote JSON data
-                    console.log(data);
-                    return { results: data.items };
-                },
-                cache: true
-            },
-            theme: "bootstrap"
-        });
+                theme: "bootstrap"
+            });
+        }
     }
 });
 
