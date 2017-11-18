@@ -43974,10 +43974,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         $(".player1-select").select2({
             tags: true,
+            width: '100%',
             ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
-                url: "/players/search",
+                url: "/api/players/search",
                 dataType: 'json',
-                quietMillis: 250,
+                quietMillis: 0,
                 data: function data(term, page) {
                     return {
                         q: term // search term
@@ -43986,6 +43987,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 results: function results(data, page) {
                     // parse the results into the format expected by Select2.
                     // since we are using custom formatting functions we do not need to alter the remote JSON data
+                    console.log(data);
                     return { results: data.items };
                 },
                 cache: true
@@ -44014,6 +44016,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         $('.player1-select').on('select2:select', function (e) {
             if (e.params.data.newTag) {
+                //e.params.data.id = 'x';
                 console.log('new!!');
                 console.log(e.params.data);
             }

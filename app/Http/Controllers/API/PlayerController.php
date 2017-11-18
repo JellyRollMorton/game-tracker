@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -81,5 +81,26 @@ class PlayerController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function search()
+    {
+        echo '{
+"results":
+[
+    {
+        "id": "50",
+        "text": "Portulacaceae "
+    },
+    {
+        "id": "76",
+        "text": "Styracaceae "
+    },
+    {
+        "id": "137",
+        "text": "Dipsacaceae"
+    }
+]
+}';
     }
 }
