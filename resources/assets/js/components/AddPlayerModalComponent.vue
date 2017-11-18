@@ -16,7 +16,7 @@
         <form>
           <div class="form-group">
             <label for="exampleInputEmail1">Name</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+            <input type="email" class="form-control" id="addPlayerModalName" placeholder="Email">
           </div>
         </form>
 
@@ -41,11 +41,15 @@
         },
         methods: {
             addPlayerButtonClick: function(event) {
-                $.post( "/api/players", function( data ) {
-                  $( ".result" ).html( data );
+              var name = $('#addPlayerModalName').val();
+
+              $.post( "/api/players", { 
+                  name: name })
+                .done(function( data ) {
+                  $('#add-player-modal').modal('hide');
                 });
 
-                $('add-player-modal').modal();
+                
             }
         }
     }

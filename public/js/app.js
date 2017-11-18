@@ -70,7 +70,7 @@
 "use strict";
 
 
-var bind = __webpack_require__(4);
+var bind = __webpack_require__(5);
 var isBuffer = __webpack_require__(19);
 
 /*global toString:true*/
@@ -424,10 +424,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(6);
+    adapter = __webpack_require__(7);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(6);
+    adapter = __webpack_require__(7);
   }
   return adapter;
 }
@@ -498,10 +498,119 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports) {
+
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file.
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+module.exports = function normalizeComponent (
+  rawScriptExports,
+  compiledTemplate,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier /* server only */
+) {
+  var esModule
+  var scriptExports = rawScriptExports = rawScriptExports || {}
+
+  // ES6 modules interop
+  var type = typeof rawScriptExports.default
+  if (type === 'object' || type === 'function') {
+    esModule = rawScriptExports
+    scriptExports = rawScriptExports.default
+  }
+
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (compiledTemplate) {
+    options.render = compiledTemplate.render
+    options.staticRenderFns = compiledTemplate.staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = injectStyles
+  }
+
+  if (hook) {
+    var functional = options.functional
+    var existing = functional
+      ? options.render
+      : options.beforeCreate
+
+    if (!functional) {
+      // inject component registration as beforeCreate hook
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    } else {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functioal component in vue file
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return existing(h, context)
+      }
+    }
+  }
+
+  return {
+    esModule: esModule,
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -10761,7 +10870,7 @@ return jQuery;
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10779,7 +10888,7 @@ module.exports = function bind(fn, thisArg) {
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -10969,7 +11078,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10980,7 +11089,7 @@ var settle = __webpack_require__(22);
 var buildURL = __webpack_require__(24);
 var parseHeaders = __webpack_require__(25);
 var isURLSameOrigin = __webpack_require__(26);
-var createError = __webpack_require__(7);
+var createError = __webpack_require__(8);
 var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(27);
 
 module.exports = function xhrAdapter(config) {
@@ -11156,7 +11265,7 @@ module.exports = function xhrAdapter(config) {
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11181,7 +11290,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11193,7 +11302,7 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11219,120 +11328,11 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 10 */
-/***/ (function(module, exports) {
-
-/* globals __VUE_SSR_CONTEXT__ */
-
-// IMPORTANT: Do NOT use ES2015 features in this file.
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-module.exports = function normalizeComponent (
-  rawScriptExports,
-  compiledTemplate,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier /* server only */
-) {
-  var esModule
-  var scriptExports = rawScriptExports = rawScriptExports || {}
-
-  // ES6 modules interop
-  var type = typeof rawScriptExports.default
-  if (type === 'object' || type === 'function') {
-    esModule = rawScriptExports
-    scriptExports = rawScriptExports.default
-  }
-
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (compiledTemplate) {
-    options.render = compiledTemplate.render
-    options.staticRenderFns = compiledTemplate.staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = injectStyles
-  }
-
-  if (hook) {
-    var functional = options.functional
-    var existing = functional
-      ? options.render
-      : options.beforeCreate
-
-    if (!functional) {
-      // inject component registration as beforeCreate hook
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    } else {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functioal component in vue file
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return existing(h, context)
-      }
-    }
-  }
-
-  return {
-    esModule: esModule,
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(12);
-module.exports = __webpack_require__(46);
+module.exports = __webpack_require__(49);
 
 
 /***/ }),
@@ -11358,8 +11358,8 @@ window.Vue = __webpack_require__(37);
  */
 
 Vue.component('add-game-modal', __webpack_require__(40));
-Vue.component('add-player-modal', __webpack_require__(56));
-Vue.component('dashboard', __webpack_require__(43));
+Vue.component('add-player-modal', __webpack_require__(43));
+Vue.component('dashboard', __webpack_require__(46));
 
 var app = new Vue({
     el: '#app'
@@ -11385,7 +11385,7 @@ window._ = __webpack_require__(14);
  */
 
 try {
-  window.$ = window.jQuery = __webpack_require__(3);
+  window.$ = window.jQuery = __webpack_require__(4);
 
   __webpack_require__(16);
 } catch (e) {}
@@ -30946,7 +30946,7 @@ module.exports = __webpack_require__(18);
 
 
 var utils = __webpack_require__(0);
-var bind = __webpack_require__(4);
+var bind = __webpack_require__(5);
 var Axios = __webpack_require__(20);
 var defaults = __webpack_require__(2);
 
@@ -30981,9 +30981,9 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(9);
+axios.Cancel = __webpack_require__(10);
 axios.CancelToken = __webpack_require__(34);
-axios.isCancel = __webpack_require__(8);
+axios.isCancel = __webpack_require__(9);
 
 // Expose all/spread
 axios.all = function all(promises) {
@@ -31136,7 +31136,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 "use strict";
 
 
-var createError = __webpack_require__(7);
+var createError = __webpack_require__(8);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -31571,7 +31571,7 @@ module.exports = InterceptorManager;
 
 var utils = __webpack_require__(0);
 var transformData = __webpack_require__(31);
-var isCancel = __webpack_require__(8);
+var isCancel = __webpack_require__(9);
 var defaults = __webpack_require__(2);
 var isAbsoluteURL = __webpack_require__(32);
 var combineURLs = __webpack_require__(33);
@@ -31731,7 +31731,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 "use strict";
 
 
-var Cancel = __webpack_require__(9);
+var Cancel = __webpack_require__(10);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -31828,8 +31828,8 @@ module.exports = function spread(callback) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-/*! Select2 4.0.4 | https://github.com/select2/select2/blob/master/LICENSE.md */!function (a) {
-   true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(3)], __WEBPACK_AMD_DEFINE_FACTORY__ = (a),
+/*! Select2 4.0.6-rc.0 | https://github.com/select2/select2/blob/master/LICENSE.md */!function (a) {
+   true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(4)], __WEBPACK_AMD_DEFINE_FACTORY__ = (a),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : "object" == (typeof module === "undefined" ? "undefined" : _typeof(module)) && module.exports ? module.exports = function (b, c) {
@@ -31980,7 +31980,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         }return d;
       };var d = function d() {
         this.listeners = {};
-      };return d.prototype.on = function (a, b) {
+      };d.prototype.on = function (a, b) {
         this.listeners = this.listeners || {}, a in this.listeners ? this.listeners[a].push(b) : this.listeners[a] = [b];
       }, d.prototype.trigger = function (a) {
         var b = Array.prototype.slice,
@@ -32020,6 +32020,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             d = d.add(a);
           }), c = d;
         }b.append(c);
+      }, c.__cache = {};var e = 0;return c.GetUniqueElementId = function (a) {
+        var b = a.getAttribute("data-select2-id");return null == b && (a.id ? (b = a.id, a.setAttribute("data-select2-id", b)) : (a.setAttribute("data-select2-id", ++e), b = e.toString())), b;
+      }, c.StoreData = function (a, b, d) {
+        var e = c.GetUniqueElementId(a);c.__cache[e] || (c.__cache[e] = {}), c.__cache[e][b] = d;
+      }, c.GetData = function (b, d) {
+        var e = c.GetUniqueElementId(b);return d ? c.__cache[e] && null != c.__cache[e][d] ? c.__cache[e][d] : a(b).data(d) : c.__cache[e];
+      }, c.RemoveData = function (a) {
+        var b = c.GetUniqueElementId(a);null != c.__cache[b] && delete c.__cache[b];
       }, c;
     }), b.define("select2/results", ["jquery", "./utils"], function (a, b) {
       function c(a, b, d) {
@@ -32046,13 +32054,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var a = this.$results.find(".select2-results__option[aria-selected]"),
             b = a.filter("[aria-selected=true]");b.length > 0 ? b.first().trigger("mouseenter") : a.first().trigger("mouseenter"), this.ensureHighlightVisible();
       }, c.prototype.setClasses = function () {
-        var b = this;this.data.current(function (c) {
-          var d = a.map(c, function (a) {
+        var c = this;this.data.current(function (d) {
+          var e = a.map(d, function (a) {
             return a.id.toString();
-          });b.$results.find(".select2-results__option[aria-selected]").each(function () {
-            var b = a(this),
-                c = a.data(this, "data"),
-                e = "" + c.id;null != c.element && c.element.selected || null == c.element && a.inArray(e, d) > -1 ? b.attr("aria-selected", "true") : b.attr("aria-selected", "false");
+          });c.$results.find(".select2-results__option[aria-selected]").each(function () {
+            var c = a(this),
+                d = b.GetData(this, "data"),
+                f = "" + d.id;null != d.element && d.element.selected || null == d.element && a.inArray(f, e) > -1 ? c.attr("aria-selected", "true") : c.attr("aria-selected", "false");
           });
         });
       }, c.prototype.showLoading = function (a) {
@@ -32061,69 +32069,69 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             d = this.option(c);d.className += " loading-results", this.$results.prepend(d);
       }, c.prototype.hideLoading = function () {
         this.$results.find(".loading-results").remove();
-      }, c.prototype.option = function (b) {
-        var c = document.createElement("li");c.className = "select2-results__option";var d = { role: "treeitem", "aria-selected": "false" };b.disabled && (delete d["aria-selected"], d["aria-disabled"] = "true"), null == b.id && delete d["aria-selected"], null != b._resultId && (c.id = b._resultId), b.title && (c.title = b.title), b.children && (d.role = "group", d["aria-label"] = b.text, delete d["aria-selected"]);for (var e in d) {
-          var f = d[e];c.setAttribute(e, f);
-        }if (b.children) {
-          var g = a(c),
-              h = document.createElement("strong");h.className = "select2-results__group";a(h);this.template(b, h);for (var i = [], j = 0; j < b.children.length; j++) {
-            var k = b.children[j],
-                l = this.option(k);i.push(l);
-          }var m = a("<ul></ul>", { class: "select2-results__options select2-results__options--nested" });m.append(i), g.append(h), g.append(m);
-        } else this.template(b, c);return a.data(c, "data", b), c;
-      }, c.prototype.bind = function (b, c) {
-        var d = this,
-            e = b.id + "-results";this.$results.attr("id", e), b.on("results:all", function (a) {
-          d.clear(), d.append(a.data), b.isOpen() && (d.setClasses(), d.highlightFirstItem());
-        }), b.on("results:append", function (a) {
-          d.append(a.data), b.isOpen() && d.setClasses();
-        }), b.on("query", function (a) {
-          d.hideMessages(), d.showLoading(a);
-        }), b.on("select", function () {
-          b.isOpen() && (d.setClasses(), d.highlightFirstItem());
-        }), b.on("unselect", function () {
-          b.isOpen() && (d.setClasses(), d.highlightFirstItem());
-        }), b.on("open", function () {
-          d.$results.attr("aria-expanded", "true"), d.$results.attr("aria-hidden", "false"), d.setClasses(), d.ensureHighlightVisible();
-        }), b.on("close", function () {
-          d.$results.attr("aria-expanded", "false"), d.$results.attr("aria-hidden", "true"), d.$results.removeAttr("aria-activedescendant");
-        }), b.on("results:toggle", function () {
-          var a = d.getHighlightedResults();0 !== a.length && a.trigger("mouseup");
-        }), b.on("results:select", function () {
-          var a = d.getHighlightedResults();if (0 !== a.length) {
-            var b = a.data("data");"true" == a.attr("aria-selected") ? d.trigger("close", {}) : d.trigger("select", { data: b });
+      }, c.prototype.option = function (c) {
+        var d = document.createElement("li");d.className = "select2-results__option";var e = { role: "treeitem", "aria-selected": "false" };c.disabled && (delete e["aria-selected"], e["aria-disabled"] = "true"), null == c.id && delete e["aria-selected"], null != c._resultId && (d.id = c._resultId), c.title && (d.title = c.title), c.children && (e.role = "group", e["aria-label"] = c.text, delete e["aria-selected"]);for (var f in e) {
+          var g = e[f];d.setAttribute(f, g);
+        }if (c.children) {
+          var h = a(d),
+              i = document.createElement("strong");i.className = "select2-results__group";a(i);this.template(c, i);for (var j = [], k = 0; k < c.children.length; k++) {
+            var l = c.children[k],
+                m = this.option(l);j.push(m);
+          }var n = a("<ul></ul>", { class: "select2-results__options select2-results__options--nested" });n.append(j), h.append(i), h.append(n);
+        } else this.template(c, d);return b.StoreData(d, "data", c), d;
+      }, c.prototype.bind = function (c, d) {
+        var e = this,
+            f = c.id + "-results";this.$results.attr("id", f), c.on("results:all", function (a) {
+          e.clear(), e.append(a.data), c.isOpen() && (e.setClasses(), e.highlightFirstItem());
+        }), c.on("results:append", function (a) {
+          e.append(a.data), c.isOpen() && e.setClasses();
+        }), c.on("query", function (a) {
+          e.hideMessages(), e.showLoading(a);
+        }), c.on("select", function () {
+          c.isOpen() && (e.setClasses(), e.highlightFirstItem());
+        }), c.on("unselect", function () {
+          c.isOpen() && (e.setClasses(), e.highlightFirstItem());
+        }), c.on("open", function () {
+          e.$results.attr("aria-expanded", "true"), e.$results.attr("aria-hidden", "false"), e.setClasses(), e.ensureHighlightVisible();
+        }), c.on("close", function () {
+          e.$results.attr("aria-expanded", "false"), e.$results.attr("aria-hidden", "true"), e.$results.removeAttr("aria-activedescendant");
+        }), c.on("results:toggle", function () {
+          var a = e.getHighlightedResults();0 !== a.length && a.trigger("mouseup");
+        }), c.on("results:select", function () {
+          var a = e.getHighlightedResults();if (0 !== a.length) {
+            var c = b.GetData(a[0], "data");"true" == a.attr("aria-selected") ? e.trigger("close", {}) : e.trigger("select", { data: c });
           }
-        }), b.on("results:previous", function () {
-          var a = d.getHighlightedResults(),
-              b = d.$results.find("[aria-selected]"),
+        }), c.on("results:previous", function () {
+          var a = e.getHighlightedResults(),
+              b = e.$results.find("[aria-selected]"),
               c = b.index(a);if (0 !== c) {
-            var e = c - 1;0 === a.length && (e = 0);var f = b.eq(e);f.trigger("mouseenter");var g = d.$results.offset().top,
+            var d = c - 1;0 === a.length && (d = 0);var f = b.eq(d);f.trigger("mouseenter");var g = e.$results.offset().top,
                 h = f.offset().top,
-                i = d.$results.scrollTop() + (h - g);0 === e ? d.$results.scrollTop(0) : h - g < 0 && d.$results.scrollTop(i);
+                i = e.$results.scrollTop() + (h - g);0 === d ? e.$results.scrollTop(0) : h - g < 0 && e.$results.scrollTop(i);
           }
-        }), b.on("results:next", function () {
-          var a = d.getHighlightedResults(),
-              b = d.$results.find("[aria-selected]"),
+        }), c.on("results:next", function () {
+          var a = e.getHighlightedResults(),
+              b = e.$results.find("[aria-selected]"),
               c = b.index(a),
-              e = c + 1;if (!(e >= b.length)) {
-            var f = b.eq(e);f.trigger("mouseenter");var g = d.$results.offset().top + d.$results.outerHeight(!1),
+              d = c + 1;if (!(d >= b.length)) {
+            var f = b.eq(d);f.trigger("mouseenter");var g = e.$results.offset().top + e.$results.outerHeight(!1),
                 h = f.offset().top + f.outerHeight(!1),
-                i = d.$results.scrollTop() + h - g;0 === e ? d.$results.scrollTop(0) : h > g && d.$results.scrollTop(i);
+                i = e.$results.scrollTop() + h - g;0 === d ? e.$results.scrollTop(0) : h > g && e.$results.scrollTop(i);
           }
-        }), b.on("results:focus", function (a) {
+        }), c.on("results:focus", function (a) {
           a.element.addClass("select2-results__option--highlighted");
-        }), b.on("results:message", function (a) {
-          d.displayMessage(a);
+        }), c.on("results:message", function (a) {
+          e.displayMessage(a);
         }), a.fn.mousewheel && this.$results.on("mousewheel", function (a) {
-          var b = d.$results.scrollTop(),
-              c = d.$results.get(0).scrollHeight - b + a.deltaY,
-              e = a.deltaY > 0 && b - a.deltaY <= 0,
-              f = a.deltaY < 0 && c <= d.$results.height();e ? (d.$results.scrollTop(0), a.preventDefault(), a.stopPropagation()) : f && (d.$results.scrollTop(d.$results.get(0).scrollHeight - d.$results.height()), a.preventDefault(), a.stopPropagation());
-        }), this.$results.on("mouseup", ".select2-results__option[aria-selected]", function (b) {
-          var c = a(this),
-              e = c.data("data");if ("true" === c.attr("aria-selected")) return void (d.options.get("multiple") ? d.trigger("unselect", { originalEvent: b, data: e }) : d.trigger("close", {}));d.trigger("select", { originalEvent: b, data: e });
-        }), this.$results.on("mouseenter", ".select2-results__option[aria-selected]", function (b) {
-          var c = a(this).data("data");d.getHighlightedResults().removeClass("select2-results__option--highlighted"), d.trigger("results:focus", { data: c, element: a(this) });
+          var b = e.$results.scrollTop(),
+              c = e.$results.get(0).scrollHeight - b + a.deltaY,
+              d = a.deltaY > 0 && b - a.deltaY <= 0,
+              f = a.deltaY < 0 && c <= e.$results.height();d ? (e.$results.scrollTop(0), a.preventDefault(), a.stopPropagation()) : f && (e.$results.scrollTop(e.$results.get(0).scrollHeight - e.$results.height()), a.preventDefault(), a.stopPropagation());
+        }), this.$results.on("mouseup", ".select2-results__option[aria-selected]", function (c) {
+          var d = a(this),
+              f = b.GetData(this, "data");if ("true" === d.attr("aria-selected")) return void (e.options.get("multiple") ? e.trigger("unselect", { originalEvent: c, data: f }) : e.trigger("close", {}));e.trigger("select", { originalEvent: c, data: f });
+        }), this.$results.on("mouseenter", ".select2-results__option[aria-selected]", function (c) {
+          var d = b.GetData(this, "data");e.getHighlightedResults().removeClass("select2-results__option--highlighted"), e.trigger("results:focus", { data: d, element: a(this) });
         });
       }, c.prototype.getHighlightedResults = function () {
         return this.$results.find(".select2-results__option--highlighted");
@@ -32149,7 +32157,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       function d(a, b) {
         this.$element = a, this.options = b, d.__super__.constructor.call(this);
       }return b.Extend(d, b.Observable), d.prototype.render = function () {
-        var b = a('<span class="select2-selection" role="combobox"  aria-haspopup="true" aria-expanded="false"></span>');return this._tabindex = 0, null != this.$element.data("old-tabindex") ? this._tabindex = this.$element.data("old-tabindex") : null != this.$element.attr("tabindex") && (this._tabindex = this.$element.attr("tabindex")), b.attr("title", this.$element.attr("title")), b.attr("tabindex", this._tabindex), this.$selection = b, b;
+        var c = a('<span class="select2-selection" role="combobox"  aria-haspopup="true" aria-expanded="false"></span>');return this._tabindex = 0, null != b.GetData(this.$element[0], "old-tabindex") ? this._tabindex = b.GetData(this.$element[0], "old-tabindex") : null != this.$element.attr("tabindex") && (this._tabindex = this.$element.attr("tabindex")), c.attr("title", this.$element.attr("title")), c.attr("tabindex", this._tabindex), this.$selection = c, c;
       }, d.prototype.bind = function (a, b) {
         var d = this,
             e = (a.id, a.id + "-results");this.container = a, this.$selection.on("focus", function (a) {
@@ -32175,11 +32183,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var c = this;window.setTimeout(function () {
           document.activeElement == c.$selection[0] || a.contains(c.$selection[0], document.activeElement) || c.trigger("blur", b);
         }, 1);
-      }, d.prototype._attachCloseHandler = function (b) {
-        a(document.body).on("mousedown.select2." + b.id, function (b) {
-          var c = a(b.target),
-              d = c.closest(".select2");a(".select2.select2-container--open").each(function () {
-            var b = a(this);this != d[0] && b.data("element").select2("close");
+      }, d.prototype._attachCloseHandler = function (c) {
+        a(document.body).on("mousedown.select2." + c.id, function (c) {
+          var d = a(c.target),
+              e = d.closest(".select2");a(".select2.select2-container--open").each(function () {
+            a(this), this != e[0] && b.GetData(this, "element").select2("close");
           });
         });
       }, d.prototype._detachCloseHandler = function (b) {
@@ -32197,15 +32205,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       }return c.Extend(e, b), e.prototype.render = function () {
         var a = e.__super__.render.call(this);return a.addClass("select2-selection--single"), a.html('<span class="select2-selection__rendered"></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span>'), a;
       }, e.prototype.bind = function (a, b) {
-        var c = this;e.__super__.bind.apply(this, arguments);var d = a.id + "-container";this.$selection.find(".select2-selection__rendered").attr("id", d), this.$selection.attr("aria-labelledby", d), this.$selection.on("mousedown", function (a) {
+        var c = this;e.__super__.bind.apply(this, arguments);var d = a.id + "-container";this.$selection.find(".select2-selection__rendered").attr("id", d).attr("role", "textbox").attr("aria-readonly", "true"), this.$selection.attr("aria-labelledby", d), this.$selection.on("mousedown", function (a) {
           1 === a.which && c.trigger("toggle", { originalEvent: a });
         }), this.$selection.on("focus", function (a) {}), this.$selection.on("blur", function (a) {}), a.on("focus", function (b) {
           a.isOpen() || c.$selection.focus();
-        }), a.on("selection:update", function (a) {
-          c.update(a.data);
         });
       }, e.prototype.clear = function () {
-        this.$selection.find(".select2-selection__rendered").empty();
+        var a = this.$selection.find(".select2-selection__rendered");a.empty(), a.removeAttr("title");
       }, e.prototype.display = function (a, b) {
         var c = this.options.get("templateSelection");return this.options.get("escapeMarkup")(c(a, b));
       }, e.prototype.selectionContainer = function () {
@@ -32213,25 +32219,25 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       }, e.prototype.update = function (a) {
         if (0 === a.length) return void this.clear();var b = a[0],
             c = this.$selection.find(".select2-selection__rendered"),
-            d = this.display(b, c);c.empty().append(d), c.prop("title", b.title || b.text);
+            d = this.display(b, c);c.empty().append(d), c.attr("title", b.title || b.text);
       }, e;
     }), b.define("select2/selection/multiple", ["jquery", "./base", "../utils"], function (a, b, c) {
       function d(a, b) {
         d.__super__.constructor.apply(this, arguments);
       }return c.Extend(d, b), d.prototype.render = function () {
         var a = d.__super__.render.call(this);return a.addClass("select2-selection--multiple"), a.html('<ul class="select2-selection__rendered"></ul>'), a;
-      }, d.prototype.bind = function (b, c) {
-        var e = this;d.__super__.bind.apply(this, arguments), this.$selection.on("click", function (a) {
-          e.trigger("toggle", { originalEvent: a });
+      }, d.prototype.bind = function (b, e) {
+        var f = this;d.__super__.bind.apply(this, arguments), this.$selection.on("click", function (a) {
+          f.trigger("toggle", { originalEvent: a });
         }), this.$selection.on("click", ".select2-selection__choice__remove", function (b) {
-          if (!e.options.get("disabled")) {
-            var c = a(this),
-                d = c.parent(),
-                f = d.data("data");e.trigger("unselect", { originalEvent: b, data: f });
+          if (!f.options.get("disabled")) {
+            var d = a(this),
+                e = d.parent(),
+                g = c.GetData(e[0], "data");f.trigger("unselect", { originalEvent: b, data: g });
           }
         });
       }, d.prototype.clear = function () {
-        this.$selection.find(".select2-selection__rendered").empty();
+        var a = this.$selection.find(".select2-selection__rendered");a.empty(), a.removeAttr("title");
       }, d.prototype.display = function (a, b) {
         var c = this.options.get("templateSelection");return this.options.get("escapeMarkup")(c(a, b));
       }, d.prototype.selectionContainer = function () {
@@ -32241,7 +32247,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           for (var b = [], d = 0; d < a.length; d++) {
             var e = a[d],
                 f = this.selectionContainer(),
-                g = this.display(e, f);f.append(g), f.prop("title", e.title || e.text), f.data("data", e), b.push(f);
+                g = this.display(e, f);f.append(g), f.attr("title", e.title || e.text), c.StoreData(f[0], "data", e), b.push(f);
           }var h = this.$selection.find(".select2-selection__rendered");c.appendMany(h, b);
         }
       }, d;
@@ -32255,61 +32261,62 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       }, b.prototype.update = function (a, b) {
         var c = 1 == b.length && b[0].id != this.placeholder.id;if (b.length > 1 || c) return a.call(this, b);this.clear();var d = this.createPlaceholder(this.placeholder);this.$selection.find(".select2-selection__rendered").append(d);
       }, b;
-    }), b.define("select2/selection/allowClear", ["jquery", "../keys"], function (a, b) {
-      function c() {}return c.prototype.bind = function (a, b, c) {
+    }), b.define("select2/selection/allowClear", ["jquery", "../keys", "../utils"], function (a, b, c) {
+      function d() {}return d.prototype.bind = function (a, b, c) {
         var d = this;a.call(this, b, c), null == this.placeholder && this.options.get("debug") && window.console && console.error && console.error("Select2: The `allowClear` option should be used in combination with the `placeholder` option."), this.$selection.on("mousedown", ".select2-selection__clear", function (a) {
           d._handleClear(a);
         }), b.on("keypress", function (a) {
           d._handleKeyboardClear(a, b);
         });
-      }, c.prototype._handleClear = function (a, b) {
+      }, d.prototype._handleClear = function (a, b) {
         if (!this.options.get("disabled")) {
-          var c = this.$selection.find(".select2-selection__clear");if (0 !== c.length) {
-            b.stopPropagation();for (var d = c.data("data"), e = 0; e < d.length; e++) {
-              var f = { data: d[e] };if (this.trigger("unselect", f), f.prevented) return;
-            }this.$element.val(this.placeholder.id).trigger("change"), this.trigger("toggle", {});
+          var d = this.$selection.find(".select2-selection__clear");if (0 !== d.length) {
+            b.stopPropagation();var e = c.GetData(d[0], "data"),
+                f = this.$element.val();this.$element.val(this.placeholder.id);var g = { data: e };if (this.trigger("clear", g), g.prevented) return void this.$element.val(f);for (var h = 0; h < e.length; h++) {
+              if (g = { data: e[h] }, this.trigger("unselect", g), g.prevented) return void this.$element.val(f);
+            }this.$element.trigger("change"), this.trigger("toggle", {});
           }
         }
-      }, c.prototype._handleKeyboardClear = function (a, c, d) {
+      }, d.prototype._handleKeyboardClear = function (a, c, d) {
         d.isOpen() || c.which != b.DELETE && c.which != b.BACKSPACE || this._handleClear(c);
-      }, c.prototype.update = function (b, c) {
-        if (b.call(this, c), !(this.$selection.find(".select2-selection__placeholder").length > 0 || 0 === c.length)) {
-          var d = a('<span class="select2-selection__clear">&times;</span>');d.data("data", c), this.$selection.find(".select2-selection__rendered").prepend(d);
+      }, d.prototype.update = function (b, d) {
+        if (b.call(this, d), !(this.$selection.find(".select2-selection__placeholder").length > 0 || 0 === d.length)) {
+          var e = a('<span class="select2-selection__clear">&times;</span>');c.StoreData(e[0], "data", d), this.$selection.find(".select2-selection__rendered").prepend(e);
         }
-      }, c;
+      }, d;
     }), b.define("select2/selection/search", ["jquery", "../utils", "../keys"], function (a, b, c) {
       function d(a, b, c) {
         a.call(this, b, c);
       }return d.prototype.render = function (b) {
-        var c = a('<li class="select2-search select2-search--inline"><input class="select2-search__field" type="search" tabindex="-1" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" role="textbox" aria-autocomplete="list" /></li>');this.$searchContainer = c, this.$search = c.find("input");var d = b.call(this);return this._transferTabIndex(), d;
-      }, d.prototype.bind = function (a, b, d) {
-        var e = this;a.call(this, b, d), b.on("open", function () {
-          e.$search.trigger("focus");
-        }), b.on("close", function () {
-          e.$search.val(""), e.$search.removeAttr("aria-activedescendant"), e.$search.trigger("focus");
-        }), b.on("enable", function () {
-          e.$search.prop("disabled", !1), e._transferTabIndex();
-        }), b.on("disable", function () {
-          e.$search.prop("disabled", !0);
-        }), b.on("focus", function (a) {
-          e.$search.trigger("focus");
-        }), b.on("results:focus", function (a) {
-          e.$search.attr("aria-activedescendant", a.id);
+        var c = a('<li class="select2-search select2-search--inline"><input class="select2-search__field" type="search" tabindex="-1" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" role="textbox" aria-autocomplete="list" /></li>');this.$searchContainer = c, this.$search = c.find("input");var d = b.call(this);return this._transferTabIndex(), d;
+      }, d.prototype.bind = function (a, d, e) {
+        var f = this;a.call(this, d, e), d.on("open", function () {
+          f.$search.trigger("focus");
+        }), d.on("close", function () {
+          f.$search.val(""), f.$search.removeAttr("aria-activedescendant"), f.$search.trigger("focus");
+        }), d.on("enable", function () {
+          f.$search.prop("disabled", !1), f._transferTabIndex();
+        }), d.on("disable", function () {
+          f.$search.prop("disabled", !0);
+        }), d.on("focus", function (a) {
+          f.$search.trigger("focus");
+        }), d.on("results:focus", function (a) {
+          f.$search.attr("aria-activedescendant", a.id);
         }), this.$selection.on("focusin", ".select2-search--inline", function (a) {
-          e.trigger("focus", a);
+          f.trigger("focus", a);
         }), this.$selection.on("focusout", ".select2-search--inline", function (a) {
-          e._handleBlur(a);
+          f._handleBlur(a);
         }), this.$selection.on("keydown", ".select2-search--inline", function (a) {
-          if (a.stopPropagation(), e.trigger("keypress", a), e._keyUpPrevented = a.isDefaultPrevented(), a.which === c.BACKSPACE && "" === e.$search.val()) {
-            var b = e.$searchContainer.prev(".select2-selection__choice");if (b.length > 0) {
-              var d = b.data("data");e.searchRemoveChoice(d), a.preventDefault();
+          if (a.stopPropagation(), f.trigger("keypress", a), f._keyUpPrevented = a.isDefaultPrevented(), a.which === c.BACKSPACE && "" === f.$search.val()) {
+            var d = f.$searchContainer.prev(".select2-selection__choice");if (d.length > 0) {
+              var e = b.GetData(d[0], "data");f.searchRemoveChoice(e), a.preventDefault();
             }
           }
-        });var f = document.documentMode,
-            g = f && f <= 11;this.$selection.on("input.searchcheck", ".select2-search--inline", function (a) {
-          if (g) return void e.$selection.off("input.search input.searchcheck");e.$selection.off("keyup.search");
+        });var g = document.documentMode,
+            h = g && g <= 11;this.$selection.on("input.searchcheck", ".select2-search--inline", function (a) {
+          if (h) return void f.$selection.off("input.search input.searchcheck");f.$selection.off("keyup.search");
         }), this.$selection.on("keyup.search input.search", ".select2-search--inline", function (a) {
-          if (g && "input" === a.type) return void e.$selection.off("input.search input.searchcheck");var b = a.which;b != c.SHIFT && b != c.CTRL && b != c.ALT && b != c.TAB && e.handleSearch(a);
+          if (h && "input" === a.type) return void f.$selection.off("input.search input.searchcheck");var b = a.which;b != c.SHIFT && b != c.CTRL && b != c.ALT && b != c.TAB && f.handleSearch(a);
         });
       }, d.prototype._transferTabIndex = function (a) {
         this.$search.attr("tabindex", this.$selection.attr("tabindex")), this.$selection.attr("tabindex", "-1");
@@ -32331,8 +32338,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }), b.define("select2/selection/eventRelay", ["jquery"], function (a) {
       function b() {}return b.prototype.bind = function (b, c, d) {
         var e = this,
-            f = ["open", "opening", "close", "closing", "select", "selecting", "unselect", "unselecting"],
-            g = ["opening", "closing", "selecting", "unselecting"];b.call(this, c, d), c.on("*", function (b, c) {
+            f = ["open", "opening", "close", "closing", "select", "selecting", "unselect", "unselecting", "clear", "clearing"],
+            g = ["opening", "closing", "selecting", "unselecting", "clearing"];b.call(this, c, d), c.on("*", function (b, c) {
           if (-1 !== a.inArray(b, f)) {
             c = c || {};var d = a.Event("select2:" + b, { params: c });e.$element.trigger(d), -1 !== a.inArray(b, g) && (c.prevented = d.isDefaultPrevented());
           }
@@ -32397,7 +32404,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         });
       }, d.prototype.destroy = function () {
         this.$element.find("*").each(function () {
-          c.removeData(this, "data");
+          b.RemoveData(this);
         });
       }, d.prototype.query = function (a, b) {
         var d = [],
@@ -32410,17 +32417,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       }, d.prototype.addOptions = function (a) {
         b.appendMany(this.$element, a);
       }, d.prototype.option = function (a) {
-        var b;a.children ? (b = document.createElement("optgroup"), b.label = a.text) : (b = document.createElement("option"), void 0 !== b.textContent ? b.textContent = a.text : b.innerText = a.text), void 0 !== a.id && (b.value = a.id), a.disabled && (b.disabled = !0), a.selected && (b.selected = !0), a.title && (b.title = a.title);var d = c(b),
-            e = this._normalizeItem(a);return e.element = b, c.data(b, "data", e), d;
+        var d;a.children ? (d = document.createElement("optgroup"), d.label = a.text) : (d = document.createElement("option"), void 0 !== d.textContent ? d.textContent = a.text : d.innerText = a.text), void 0 !== a.id && (d.value = a.id), a.disabled && (d.disabled = !0), a.selected && (d.selected = !0), a.title && (d.title = a.title);var e = c(d),
+            f = this._normalizeItem(a);return f.element = d, b.StoreData(d, "data", f), e;
       }, d.prototype.item = function (a) {
-        var b = {};if (null != (b = c.data(a[0], "data"))) return b;if (a.is("option")) b = { id: a.val(), text: a.text(), disabled: a.prop("disabled"), selected: a.prop("selected"), title: a.prop("title") };else if (a.is("optgroup")) {
-          b = { text: a.prop("label"), children: [], title: a.prop("title") };for (var d = a.children("option"), e = [], f = 0; f < d.length; f++) {
-            var g = c(d[f]),
-                h = this.item(g);e.push(h);
-          }b.children = e;
-        }return b = this._normalizeItem(b), b.element = a[0], c.data(a[0], "data", b), b;
+        var d = {};if (null != (d = b.GetData(a[0], "data"))) return d;if (a.is("option")) d = { id: a.val(), text: a.text(), disabled: a.prop("disabled"), selected: a.prop("selected"), title: a.prop("title") };else if (a.is("optgroup")) {
+          d = { text: a.prop("label"), children: [], title: a.prop("title") };for (var e = a.children("option"), f = [], g = 0; g < e.length; g++) {
+            var h = c(e[g]),
+                i = this.item(h);f.push(i);
+          }d.children = f;
+        }return d = this._normalizeItem(d), d.element = a[0], b.StoreData(a[0], "data", d), d;
       }, d.prototype._normalizeItem = function (a) {
-        c.isPlainObject(a) || (a = { id: a, text: a }), a = c.extend({}, { text: "" }, a);var b = { selected: !1, disabled: !1 };return null != a.id && (a.id = a.id.toString()), null != a.text && (a.text = a.text.toString()), null == a._resultId && a.id && null != this.container && (a._resultId = this.generateResultId(this.container, a)), c.extend({}, b, a);
+        a !== Object(a) && (a = { id: a, text: a }), a = c.extend({}, { text: "" }, a);var b = { selected: !1, disabled: !1 };return null != a.id && (a.id = a.id.toString()), null != a.text && (a.text = a.text.toString()), null == a._resultId && a.id && null != this.container && (a._resultId = this.generateResultId(this.container, a)), c.extend({}, b, a);
       }, d.prototype.matches = function (a, b) {
         return this.options.get("matcher")(a, b);
       }, d;
@@ -32467,7 +32474,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           var d = f.transport(f, function (d) {
             var f = e.processResults(d, a);e.options.get("debug") && window.console && console.error && (f && f.results && c.isArray(f.results) || console.error("Select2: The AJAX results did not return an array in the `results` key of the response.")), b(f);
           }, function () {
-            d.status && "0" === d.status || e.trigger("results:message", { message: "errorLoading" });
+            "status" in d && (0 === d.status || "0" === d.status) || e.trigger("results:message", { message: "errorLoading" });
           });e._request = d;
         }var e = this;null != this._request && (c.isFunction(this._request.abort) && this._request.abort(), this._request = null);var f = c.extend({ type: "GET" }, this.ajaxOptions);"function" == typeof f.url && (f.url = f.url.call(this.$element, a)), "function" == typeof f.data && (f.data = f.data.call(this.$element, a)), this.ajaxOptions.delay && null != a.term ? (this._queryTimeout && window.clearTimeout(this._queryTimeout), this._queryTimeout = window.setTimeout(d, this.ajaxOptions.delay)) : d();
       }, d;
@@ -32554,7 +32561,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }), b.define("select2/dropdown/search", ["jquery", "../utils"], function (a, b) {
       function c() {}return c.prototype.render = function (b) {
         var c = b.call(this),
-            d = a('<span class="select2-search select2-search--dropdown"><input class="select2-search__field" type="search" tabindex="-1" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" role="textbox" /></span>');return this.$searchContainer = d, this.$search = d.find("input"), c.prepend(d), c;
+            d = a('<span class="select2-search select2-search--dropdown"><input class="select2-search__field" type="search" tabindex="-1" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" role="textbox" /></span>');return this.$searchContainer = d, this.$search = d.find("input"), c.prepend(d), c;
       }, c.prototype.bind = function (b, c, d) {
         var e = this;b.call(this, c, d), this.$search.on("keydown", function (a) {
           e.trigger("keypress", a), e._keyUpPrevented = a.isDefaultPrevented();
@@ -32567,7 +32574,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             e.$search.focus();
           }, 0);
         }), c.on("close", function () {
-          e.$search.attr("tabindex", -1), e.$search.val("");
+          e.$search.attr("tabindex", -1), e.$search.val(""), e.$search.blur();
         }), c.on("focus", function () {
           c.isOpen() || e.$search.focus();
         }), c.on("results:all", function (a) {
@@ -32648,9 +32655,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             g = "resize.select2." + d.id,
             h = "orientationchange.select2." + d.id,
             i = this.$container.parents().filter(b.hasScroll);i.each(function () {
-          a(this).data("select2-scroll-position", { x: a(this).scrollLeft(), y: a(this).scrollTop() });
-        }), i.on(f, function (b) {
-          var c = a(this).data("select2-scroll-position");a(this).scrollTop(c.y);
+          b.StoreData(this, "select2-scroll-position", { x: a(this).scrollLeft(), y: a(this).scrollTop() });
+        }), i.on(f, function (c) {
+          var d = b.GetData(this, "select2-scroll-position");a(this).scrollTop(d.y);
         }), a(window).on(f + " " + g + " " + h, function (a) {
           e._positionDropdown(), e._resizeDropdown();
         });
@@ -32684,18 +32691,18 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       }return b.prototype.showSearch = function (b, c) {
         return !(a(c.data.results) < this.minimumResultsForSearch) && b.call(this, c);
       }, b;
-    }), b.define("select2/dropdown/selectOnClose", [], function () {
-      function a() {}return a.prototype.bind = function (a, b, c) {
+    }), b.define("select2/dropdown/selectOnClose", ["../utils"], function (a) {
+      function b() {}return b.prototype.bind = function (a, b, c) {
         var d = this;a.call(this, b, c), b.on("close", function (a) {
           d._handleSelectOnClose(a);
         });
-      }, a.prototype._handleSelectOnClose = function (a, b) {
-        if (b && null != b.originalSelect2Event) {
-          var c = b.originalSelect2Event;if ("select" === c._type || "unselect" === c._type) return;
-        }var d = this.getHighlightedResults();if (!(d.length < 1)) {
-          var e = d.data("data");null != e.element && e.element.selected || null == e.element && e.selected || this.trigger("select", { data: e });
+      }, b.prototype._handleSelectOnClose = function (b, c) {
+        if (c && null != c.originalSelect2Event) {
+          var d = c.originalSelect2Event;if ("select" === d._type || "unselect" === d._type) return;
+        }var e = this.getHighlightedResults();if (!(e.length < 1)) {
+          var f = a.GetData(e[0], "data");null != f.element && f.element.selected || null == f.element && f.selected || this.trigger("select", { data: f });
         }
-      }, a;
+      }, b;
     }), b.define("select2/dropdown/closeOnSelect", [], function () {
       function a() {}return a.prototype.bind = function (a, b, c) {
         var d = this;a.call(this, b, c), b.on("select", function (a) {
@@ -32784,7 +32791,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           }, theme: "default", width: "resolve" };
       }, D.prototype.set = function (b, c) {
         var d = a.camelCase(b),
-            e = {};e[d] = c;var f = j._convertData(e);a.extend(this.defaults, f);
+            e = {};e[d] = c;var f = j._convertData(e);a.extend(!0, this.defaults, f);
       }, new D();
     }), b.define("select2/options", ["require", "jquery", "./defaults", "./utils"], function (a, b, c, d) {
       function e(b, e) {
@@ -32792,7 +32799,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           var f = a(this.get("amdBase") + "compat/inputData");this.options.dataAdapter = d.Decorate(this.options.dataAdapter, f);
         }
       }return e.prototype.fromElement = function (a) {
-        var c = ["select2"];null == this.options.multiple && (this.options.multiple = a.prop("multiple")), null == this.options.disabled && (this.options.disabled = a.prop("disabled")), null == this.options.language && (a.prop("lang") ? this.options.language = a.prop("lang").toLowerCase() : a.closest("[lang]").prop("lang") && (this.options.language = a.closest("[lang]").prop("lang"))), null == this.options.dir && (a.prop("dir") ? this.options.dir = a.prop("dir") : a.closest("[dir]").prop("dir") ? this.options.dir = a.closest("[dir]").prop("dir") : this.options.dir = "ltr"), a.prop("disabled", this.options.disabled), a.prop("multiple", this.options.multiple), a.data("select2Tags") && (this.options.debug && window.console && console.warn && console.warn('Select2: The `data-select2-tags` attribute has been changed to use the `data-data` and `data-tags="true"` attributes and will be removed in future versions of Select2.'), a.data("data", a.data("select2Tags")), a.data("tags", !0)), a.data("ajaxUrl") && (this.options.debug && window.console && console.warn && console.warn("Select2: The `data-ajax-url` attribute has been changed to `data-ajax--url` and support for the old attribute will be removed in future versions of Select2."), a.attr("ajax--url", a.data("ajaxUrl")), a.data("ajax--url", a.data("ajaxUrl")));var e = {};e = b.fn.jquery && "1." == b.fn.jquery.substr(0, 2) && a[0].dataset ? b.extend(!0, {}, a[0].dataset, a.data()) : a.data();var f = b.extend(!0, {}, e);f = d._convertData(f);for (var g in f) {
+        var c = ["select2"];null == this.options.multiple && (this.options.multiple = a.prop("multiple")), null == this.options.disabled && (this.options.disabled = a.prop("disabled")), null == this.options.language && (a.prop("lang") ? this.options.language = a.prop("lang").toLowerCase() : a.closest("[lang]").prop("lang") && (this.options.language = a.closest("[lang]").prop("lang"))), null == this.options.dir && (a.prop("dir") ? this.options.dir = a.prop("dir") : a.closest("[dir]").prop("dir") ? this.options.dir = a.closest("[dir]").prop("dir") : this.options.dir = "ltr"), a.prop("disabled", this.options.disabled), a.prop("multiple", this.options.multiple), d.GetData(a[0], "select2Tags") && (this.options.debug && window.console && console.warn && console.warn('Select2: The `data-select2-tags` attribute has been changed to use the `data-data` and `data-tags="true"` attributes and will be removed in future versions of Select2.'), d.StoreData(a[0], "data", d.GetData(a[0], "select2Tags")), d.StoreData(a[0], "tags", !0)), d.GetData(a[0], "ajaxUrl") && (this.options.debug && window.console && console.warn && console.warn("Select2: The `data-ajax-url` attribute has been changed to `data-ajax--url` and support for the old attribute will be removed in future versions of Select2."), a.attr("ajax--url", d.GetData(a[0], "ajaxUrl")), d.StoreData(a[0], "ajax-Url", d.GetData(a[0], "ajaxUrl")));var e = {};e = b.fn.jquery && "1." == b.fn.jquery.substr(0, 2) && a[0].dataset ? b.extend(!0, {}, a[0].dataset, d.GetData(a[0])) : d.GetData(a[0]);var f = b.extend(!0, {}, e);f = d._convertData(f);for (var g in f) {
           b.inArray(g, c) > -1 || (b.isPlainObject(this.options[g]) ? b.extend(this.options[g], f[g]) : this.options[g] = f[g]);
         }return this;
       }, e.prototype.get = function (a) {
@@ -32801,10 +32808,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         this.options[a] = b;
       }, e;
     }), b.define("select2/core", ["jquery", "./options", "./utils", "./keys"], function (a, b, c, d) {
-      var e = function e(a, c) {
-        null != a.data("select2") && a.data("select2").destroy(), this.$element = a, this.id = this._generateId(a), c = c || {}, this.options = new b(c, a), e.__super__.constructor.call(this);var d = a.attr("tabindex") || 0;a.data("old-tabindex", d), a.attr("tabindex", "-1");var f = this.options.get("dataAdapter");this.dataAdapter = new f(a, this.options);var g = this.render();this._placeContainer(g);var h = this.options.get("selectionAdapter");this.selection = new h(a, this.options), this.$selection = this.selection.render(), this.selection.position(this.$selection, g);var i = this.options.get("dropdownAdapter");this.dropdown = new i(a, this.options), this.$dropdown = this.dropdown.render(), this.dropdown.position(this.$dropdown, g);var j = this.options.get("resultsAdapter");this.results = new j(a, this.options, this.dataAdapter), this.$results = this.results.render(), this.results.position(this.$results, this.$dropdown);var k = this;this._bindAdapters(), this._registerDomEvents(), this._registerDataEvents(), this._registerSelectionEvents(), this._registerDropdownEvents(), this._registerResultsEvents(), this._registerEvents(), this.dataAdapter.current(function (a) {
-          k.trigger("selection:update", { data: a });
-        }), a.addClass("select2-hidden-accessible"), a.attr("aria-hidden", "true"), this._syncAttributes(), a.data("select2", this);
+      var e = function e(a, d) {
+        null != c.GetData(a[0], "select2") && c.GetData(a[0], "select2").destroy(), this.$element = a, this.id = this._generateId(a), d = d || {}, this.options = new b(d, a), e.__super__.constructor.call(this);var f = a.attr("tabindex") || 0;c.StoreData(a[0], "old-tabindex", f), a.attr("tabindex", "-1");var g = this.options.get("dataAdapter");this.dataAdapter = new g(a, this.options);var h = this.render();this._placeContainer(h);var i = this.options.get("selectionAdapter");this.selection = new i(a, this.options), this.$selection = this.selection.render(), this.selection.position(this.$selection, h);var j = this.options.get("dropdownAdapter");this.dropdown = new j(a, this.options), this.$dropdown = this.dropdown.render(), this.dropdown.position(this.$dropdown, h);var k = this.options.get("resultsAdapter");this.results = new k(a, this.options, this.dataAdapter), this.$results = this.results.render(), this.results.position(this.$results, this.$dropdown);var l = this;this._bindAdapters(), this._registerDomEvents(), this._registerDataEvents(), this._registerSelectionEvents(), this._registerDropdownEvents(), this._registerResultsEvents(), this._registerEvents(), this.dataAdapter.current(function (a) {
+          l.trigger("selection:update", { data: a });
+        }), a.addClass("select2-hidden-accessible"), a.attr("aria-hidden", "true"), this._syncAttributes(), c.StoreData(a[0], "select2", this);
       };return c.Extend(e, c.Observable), e.prototype._generateId = function (a) {
         var b = "";return b = null != a.attr("id") ? a.attr("id") : null != a.attr("name") ? a.attr("name") + "-" + c.generateChars(2) : c.generateChars(4), b = b.replace(/(:|\.|\[|\]|,)/g, ""), b = "select2-" + b;
       }, e.prototype._placeContainer = function (a) {
@@ -32890,7 +32897,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         }
       }, e.prototype.trigger = function (a, b) {
         var c = e.__super__.trigger,
-            d = { open: "opening", close: "closing", select: "selecting", unselect: "unselecting" };if (void 0 === b && (b = {}), a in d) {
+            d = { open: "opening", close: "closing", select: "selecting", unselect: "unselecting", clear: "clearing" };if (void 0 === b && (b = {}), a in d) {
           var f = d[a],
               g = { prevented: !1, name: a, args: b };if (c.call(this, f, g), g.prevented) return void (b.prevented = !0);
         }c.call(this, a, b);
@@ -32917,22 +32924,22 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           return a.toString();
         })), this.$element.val(c).trigger("change");
       }, e.prototype.destroy = function () {
-        this.$container.remove(), this.$element[0].detachEvent && this.$element[0].detachEvent("onpropertychange", this._syncA), null != this._observer ? (this._observer.disconnect(), this._observer = null) : this.$element[0].removeEventListener && (this.$element[0].removeEventListener("DOMAttrModified", this._syncA, !1), this.$element[0].removeEventListener("DOMNodeInserted", this._syncS, !1), this.$element[0].removeEventListener("DOMNodeRemoved", this._syncS, !1)), this._syncA = null, this._syncS = null, this.$element.off(".select2"), this.$element.attr("tabindex", this.$element.data("old-tabindex")), this.$element.removeClass("select2-hidden-accessible"), this.$element.attr("aria-hidden", "false"), this.$element.removeData("select2"), this.dataAdapter.destroy(), this.selection.destroy(), this.dropdown.destroy(), this.results.destroy(), this.dataAdapter = null, this.selection = null, this.dropdown = null, this.results = null;
+        this.$container.remove(), this.$element[0].detachEvent && this.$element[0].detachEvent("onpropertychange", this._syncA), null != this._observer ? (this._observer.disconnect(), this._observer = null) : this.$element[0].removeEventListener && (this.$element[0].removeEventListener("DOMAttrModified", this._syncA, !1), this.$element[0].removeEventListener("DOMNodeInserted", this._syncS, !1), this.$element[0].removeEventListener("DOMNodeRemoved", this._syncS, !1)), this._syncA = null, this._syncS = null, this.$element.off(".select2"), this.$element.attr("tabindex", c.GetData(this.$element[0], "old-tabindex")), this.$element.removeClass("select2-hidden-accessible"), this.$element.attr("aria-hidden", "false"), c.RemoveData(this.$element[0]), this.dataAdapter.destroy(), this.selection.destroy(), this.dropdown.destroy(), this.results.destroy(), this.dataAdapter = null, this.selection = null, this.dropdown = null, this.results = null;
       }, e.prototype.render = function () {
-        var b = a('<span class="select2 select2-container"><span class="selection"></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>');return b.attr("dir", this.options.get("dir")), this.$container = b, this.$container.addClass("select2-container--" + this.options.get("theme")), b.data("element", this.$element), b;
+        var b = a('<span class="select2 select2-container"><span class="selection"></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>');return b.attr("dir", this.options.get("dir")), this.$container = b, this.$container.addClass("select2-container--" + this.options.get("theme")), c.StoreData(b[0], "element", this.$element), b;
       }, e;
     }), b.define("jquery-mousewheel", ["jquery"], function (a) {
       return a;
-    }), b.define("jquery.select2", ["jquery", "jquery-mousewheel", "./select2/core", "./select2/defaults"], function (a, b, c, d) {
+    }), b.define("jquery.select2", ["jquery", "jquery-mousewheel", "./select2/core", "./select2/defaults", "./select2/utils"], function (a, b, c, d, e) {
       if (null == a.fn.select2) {
-        var e = ["open", "close", "destroy"];a.fn.select2 = function (b) {
+        var f = ["open", "close", "destroy"];a.fn.select2 = function (b) {
           if ("object" == _typeof(b = b || {})) return this.each(function () {
             var d = a.extend(!0, {}, b);new c(a(this), d);
           }), this;if ("string" == typeof b) {
             var d,
-                f = Array.prototype.slice.call(arguments, 1);return this.each(function () {
-              var c = a(this).data("select2");null == c && window.console && console.error && console.error("The select2('" + b + "') method was called on an element that is not using Select2."), d = c[b].apply(c, f);
-            }), a.inArray(b, e) > -1 ? this : d;
+                g = Array.prototype.slice.call(arguments, 1);return this.each(function () {
+              var a = e.GetData(this, "select2");null == a && window.console && console.error && console.error("The select2('" + b + "') method was called on an element that is not using Select2."), d = a[b].apply(a, g);
+            }), a.inArray(b, f) > -1 ? this : d;
           }throw new Error("Invalid arguments for Select2: " + b);
         };
       }return null == a.fn.select2.defaults && (a.fn.select2.defaults = d), c;
@@ -43872,14 +43879,14 @@ exports.clearImmediate = clearImmediate;
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(6)))
 
 /***/ }),
 /* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(10)
+var normalizeComponent = __webpack_require__(3)
 /* script */
 var __vue_script__ = __webpack_require__(41)
 /* template */
@@ -43965,21 +43972,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
         console.log('Component mounted.');
 
         $(".player1-select").select2({
-            tags: true,
             width: '100%',
             ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
                 url: "/api/players/search",
                 dataType: 'json',
-                quietMillis: 0,
+                quietMillis: 250,
+                language: {
+                    errorLoading: function errorLoading() {
+                        return "Searching!";
+                    }
+                },
                 data: function data(term, page) {
                     return {
                         q: term // search term
@@ -43993,26 +44001,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 },
                 cache: true
             },
-            theme: "bootstrap",
-            createTag: function createTag(params) {
-                var term = $.trim(params.term);
-
-                if (term === '') {
-                    return null;
-                }
-
-                console.log(term);
-                console.log(params);
-                return {
-                    id: term,
-                    text: term,
-                    newTag: true // add additional parameters
-                };
-            },
-            select: function select(params) {
-                console.log('selected!');
-                console.log(params);
-            }
+            theme: "bootstrap"
         });
 
         $('.player1-select').on('select2:select', function (e) {
@@ -44085,17 +44074,7 @@ var staticRenderFns = [
                       _vm._v("Player 1")
                     ]),
                     _vm._v(" "),
-                    _c(
-                      "select",
-                      { staticClass: "form-control player1-select" },
-                      [
-                        _c("option", [_vm._v("orange")]),
-                        _vm._v(" "),
-                        _c("option", [_vm._v("white")]),
-                        _vm._v(" "),
-                        _c("option", [_vm._v("purple")])
-                      ]
-                    )
+                    _c("select", { staticClass: "form-control player1-select" })
                   ])
                 ])
               ]),
@@ -44137,162 +44116,11 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(10)
+var normalizeComponent = __webpack_require__(3)
 /* script */
 var __vue_script__ = __webpack_require__(44)
 /* template */
 var __vue_template__ = __webpack_require__(45)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/DashboardComponent.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-fbc12a80", Component.options)
-  } else {
-    hotAPI.reload("data-v-fbc12a80", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 44 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  mounted: function mounted() {
-    console.log('Dashboard mounted.');
-  },
-
-  methods: {
-    addGameButtonClick: function addGameButtonClick(event) {
-      $('#add-game-modal').modal();
-    },
-
-    addPlayerButtonClick: function addPlayerButtonClick(event) {
-      $('#add-player-modal').modal();
-    }
-  }
-});
-
-/***/ }),
-/* 45 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c("add-game-modal"),
-      _vm._v(" "),
-      _c("add-player-modal"),
-      _vm._v(" "),
-      _c("div", { staticClass: "toolbar-buttons pull-right" }, [
-        _c(
-          "a",
-          {
-            staticClass: "btn btn-primary",
-            attrs: { href: "#", role: "button" },
-            on: { click: _vm.addPlayerButtonClick }
-          },
-          [_vm._v("Add Player")]
-        ),
-        _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass: "btn btn-primary",
-            attrs: { href: "#", role: "button" },
-            on: { click: _vm.addGameButtonClick }
-          },
-          [_vm._v("Add Game")]
-        )
-      ])
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-fbc12a80", module.exports)
-  }
-}
-
-/***/ }),
-/* 46 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 47 */,
-/* 48 */,
-/* 49 */,
-/* 50 */,
-/* 51 */,
-/* 52 */,
-/* 53 */,
-/* 54 */,
-/* 55 */,
-/* 56 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(10)
-/* script */
-var __vue_script__ = __webpack_require__(57)
-/* template */
-var __vue_template__ = __webpack_require__(58)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -44332,7 +44160,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 57 */
+/* 44 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44381,17 +44209,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         addPlayerButtonClick: function addPlayerButtonClick(event) {
-            $.post("/api/players", function (data) {
-                $(".result").html(data);
-            });
+            var name = $('#addPlayerModalName').val();
 
-            $('add-player-modal').modal();
+            $.post("/api/players", {
+                name: name }).done(function (data) {
+                $('#add-player-modal').modal('hide');
+            });
         }
     }
 });
 
 /***/ }),
-/* 58 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -44470,7 +44299,7 @@ var staticRenderFns = [
             staticClass: "form-control",
             attrs: {
               type: "email",
-              id: "exampleInputEmail1",
+              id: "addPlayerModalName",
               placeholder: "Email"
             }
           })
@@ -44487,6 +44316,148 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-2d0dd16b", module.exports)
   }
 }
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(47)
+/* template */
+var __vue_template__ = __webpack_require__(48)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/DashboardComponent.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-fbc12a80", Component.options)
+  } else {
+    hotAPI.reload("data-v-fbc12a80", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 47 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mounted: function mounted() {
+    console.log('Dashboard mounted.');
+  },
+
+  methods: {
+    addGameButtonClick: function addGameButtonClick(event) {
+      $('#add-game-modal').modal();
+    },
+
+    addPlayerButtonClick: function addPlayerButtonClick(event) {
+      $('#add-player-modal').modal();
+    }
+  }
+});
+
+/***/ }),
+/* 48 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("add-game-modal"),
+      _vm._v(" "),
+      _c("add-player-modal"),
+      _vm._v(" "),
+      _c("div", { staticClass: "toolbar-buttons pull-right" }, [
+        _c(
+          "a",
+          {
+            staticClass: "btn btn-primary",
+            attrs: { href: "#", role: "button" },
+            on: { click: _vm.addPlayerButtonClick }
+          },
+          [_vm._v("Add Player")]
+        ),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass: "btn btn-primary",
+            attrs: { href: "#", role: "button" },
+            on: { click: _vm.addGameButtonClick }
+          },
+          [_vm._v("Add Game")]
+        )
+      ])
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-fbc12a80", module.exports)
+  }
+}
+
+/***/ }),
+/* 49 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);

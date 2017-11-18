@@ -17,9 +17,6 @@
   <div class="form-group">
     <label for="exampleInputEmail1">Player 1</label>
             <select class="form-control player1-select">
-          <option>orange</option>
-          <option>white</option>
-          <option>purple</option>
         </select>
   </div>
 </form>
@@ -44,12 +41,16 @@
             console.log('Component mounted.')            
 
             $(".player1-select").select2({
-              tags: true,
               width: '100%',
                 ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
                     url: "/api/players/search",
                     dataType: 'json',
-                    quietMillis: 0,
+                    quietMillis: 250,
+                    language: {
+                      errorLoading:function() { 
+                        return "Searching!" 
+                      }
+                    },
                     data: function (term, page) {
                         return {
                             q: term, // search term
@@ -62,26 +63,7 @@
                     },
                     cache: true
                 },              
-              theme: "bootstrap",
-              createTag: function(params) {
-                var term = $.trim(params.term);
-
-                if (term === '') {
-                  return null;
-                }
-
-                console.log(term);
-                console.log(params);
-                return {
-                  id: term,
-                  text: term,
-                  newTag: true // add additional parameters
-                }
-              },
-              select: function(params) {
-                console.log('selected!');
-                console.log(params);
-              }
+              theme: "bootstrap"
             });
 
             $('.player1-select').on('select2:select', function (e) {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use \App\Player;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -35,10 +36,9 @@ class PlayerController extends Controller
      */
     public function store(Request $request)
     {
-        $player = new \App\Player;
-        $player->name = 'David';
+        $player = new Player;
+        $player->name = $request->input('name');
         $player->save();
-        echo $player->id;
     }
 
     /**
@@ -86,24 +86,51 @@ class PlayerController extends Controller
         //
     }
 
-    public function search()
+    public function search(Request $request)
     {
-        echo '{
-"results":
-[
-    {
-        "id": "50",
-        "text": "Portulacaceae "
-    },
-    {
-        "id": "76",
-        "text": "Styracaceae "
-    },
-    {
-        "id": "137",
-        "text": "Dipsacaceae"
-    }
-]
-}';
+        $response = [
+            'results' => []
+        ];
+
+        $searchQuery= $request->input()['q'];
+
+        // the term parameter only exists if the user has typed more than one character
+        if (array_key_exists('term', $searchQuery)) {
+            // the search value is processed as a bind variable, so it's protected against
+            // SQL injection
+            $players = Player::where('name', 'like', '%' . $searchQuery['term'] . '%')->limit(10)->get();
+
+            foreach($players as $player) {
+                $response['results'][] = [
+                    'id' => $player->id,
+                    'text' => $player->name
+                ];
+            }            
+        }
+
+
+ 
+        
+
+
+        return response()->json($response);
+
+//         echo '{
+// "results":
+// [
+//     {
+//         "id": "50",
+//         "text": "Portulacaceae "
+//     },
+//     {
+//         "id": "76",
+//         "text": "Styracaceae "
+//     },
+//     {
+//         "id": "137",
+//         "text": "Dipsacaceae"
+//     }
+// ]
+// }';
     }
 }
