@@ -43972,12 +43972,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
         console.log('Component mounted.');
 
-        $(".player1-select").select2({
+        $("#player1-select").select2({
             width: '100%',
             ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
                 url: "/api/players/search",
@@ -44003,20 +44008,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             },
             theme: "bootstrap"
         });
-
-        $('.player1-select').on('select2:select', function (e) {
-            if (e.params.data.newTag) {
-                //e.params.data.id = 'x';
-                console.log('new!!');
-                console.log(e.params.data);
-            }
-        });
-    },
-
-    methods: {
-        select: function select(event) {
-            console.log('yoyoo');
-        }
     }
 });
 
@@ -44045,9 +44036,7 @@ var staticRenderFns = [
           [
             _c("div", { staticClass: "modal-content" }, [
               _c("div", { staticClass: "modal-header" }, [
-                _c("h5", { staticClass: "modal-title" }, [
-                  _vm._v("Modal title")
-                ]),
+                _c("h4", { staticClass: "modal-title" }, [_vm._v("Add Game")]),
                 _vm._v(" "),
                 _c(
                   "button",
@@ -44070,11 +44059,25 @@ var staticRenderFns = [
               _c("div", { staticClass: "modal-body" }, [
                 _c("form", [
                   _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "exampleInputEmail1" } }, [
+                    _c("label", { attrs: { for: "player1-select" } }, [
                       _vm._v("Player 1")
                     ]),
                     _vm._v(" "),
-                    _c("select", { staticClass: "form-control player1-select" })
+                    _c("select", {
+                      staticClass: "form-control",
+                      attrs: { id: "player1-select" }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "player2-select" } }, [
+                      _vm._v("Player 2")
+                    ]),
+                    _vm._v(" "),
+                    _c("select", {
+                      staticClass: "form-control",
+                      attrs: { id: "player2-select" }
+                    })
                   ])
                 ])
               ]),
@@ -44196,11 +44199,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
@@ -44268,7 +44266,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "modal-header" }, [
-      _c("h5", { staticClass: "modal-title" }, [_vm._v("Modal title")]),
+      _c("h4", { staticClass: "modal-title" }, [_vm._v("Add Player")]),
       _vm._v(" "),
       _c(
         "button",
@@ -44291,17 +44289,13 @@ var staticRenderFns = [
     return _c("div", { staticClass: "modal-body" }, [
       _c("form", [
         _c("div", { staticClass: "form-group" }, [
-          _c("label", { attrs: { for: "exampleInputEmail1" } }, [
-            _vm._v("Name")
+          _c("label", { attrs: { for: "addPlayerModalName" } }, [
+            _vm._v("Player Name")
           ]),
           _vm._v(" "),
           _c("input", {
             staticClass: "form-control",
-            attrs: {
-              type: "email",
-              id: "addPlayerModalName",
-              placeholder: "Email"
-            }
+            attrs: { type: "text", id: "addPlayerModalName" }
           })
         ])
       ])

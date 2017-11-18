@@ -4,24 +4,19 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
+        <h4 class="modal-title">Add Player</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
 
-
-
         <form>
           <div class="form-group">
-            <label for="exampleInputEmail1">Name</label>
-            <input type="email" class="form-control" id="addPlayerModalName" placeholder="Email">
+            <label for="addPlayerModalName">Player Name</label>
+            <input type="text" class="form-control" id="addPlayerModalName">
           </div>
         </form>
-
-
-
 
       </div>
       <div class="modal-footer">

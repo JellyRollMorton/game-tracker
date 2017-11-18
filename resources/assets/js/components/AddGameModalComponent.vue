@@ -4,7 +4,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
+        <h4 class="modal-title">Add Game</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -15,8 +15,13 @@
 
 <form>
   <div class="form-group">
-    <label for="exampleInputEmail1">Player 1</label>
-            <select class="form-control player1-select">
+    <label for="player1-select">Player 1</label>
+            <select class="form-control" id="player1-select">
+        </select>
+  </div>
+    <div class="form-group">
+    <label for="player2-select">Player 2</label>
+            <select class="form-control" id="player2-select">
         </select>
   </div>
 </form>
@@ -40,7 +45,7 @@
         mounted() {
             console.log('Component mounted.')            
 
-            $(".player1-select").select2({
+            $("#player1-select").select2({
               width: '100%',
                 ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
                     url: "/api/players/search",
@@ -66,20 +71,6 @@
               theme: "bootstrap"
             });
 
-            $('.player1-select').on('select2:select', function (e) {
-                if (e.params.data.newTag) {
-                    //e.params.data.id = 'x';
-                    console.log('new!!');
-                    console.log(e.params.data);
-                }
-            });
-
-
-        },
-        methods: {
-            select: function(event) {
-                console.log('yoyoo');
-            }
         }
     }
 </script>
