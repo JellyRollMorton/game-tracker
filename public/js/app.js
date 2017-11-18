@@ -43972,6 +43972,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
@@ -44007,11 +44036,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         addGameButtonClick: function addGameButtonClick(event) {
-            var player1Id = $('#player1-select').val();
-            var player2Id = $('#player2-select').val();
+            var players = [{
+                'id': $('#player1-select').val(),
+                'score': $('#player1-score').val()
+            }, {
+                'id': $('#player2-select').val(),
+                'score': $('#player2-score').val()
+            }];
 
             $.post("/api/games", {
-                players: [player1Id, player2Id]
+                players: players
             }).done(function (data) {
                 $('#add-game-modal').modal('hide');
             });
@@ -44090,26 +44124,58 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "modal-body" }, [
       _c("form", [
-        _c("div", { staticClass: "form-group" }, [
-          _c("label", { attrs: { for: "player1-select" } }, [
-            _vm._v("Player 1")
+        _c("table", { attrs: { id: "add-game-player-table" } }, [
+          _c("tr", [
+            _c("th"),
+            _vm._v(" "),
+            _c("th", { staticClass: "player-row" }, [_vm._v("Player 1")]),
+            _vm._v(" "),
+            _c("th", { staticClass: "player-row" }, [_vm._v("Player 2")])
           ]),
           _vm._v(" "),
-          _c("select", {
-            staticClass: "form-control",
-            attrs: { id: "player1-select" }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group" }, [
-          _c("label", { attrs: { for: "player2-select" } }, [
-            _vm._v("Player 2")
+          _c("tr", [
+            _c("td", [_vm._v("Name")]),
+            _vm._v(" "),
+            _c("td", { staticClass: "player-row" }, [
+              _c("div", { staticClass: "form-group" }, [
+                _c("select", {
+                  staticClass: "form-control",
+                  attrs: { id: "player1-select" }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("td", { staticClass: "player-row" }, [
+              _c("div", { staticClass: "form-group" }, [
+                _c("select", {
+                  staticClass: "form-control",
+                  attrs: { id: "player2-select" }
+                })
+              ])
+            ])
           ]),
           _vm._v(" "),
-          _c("select", {
-            staticClass: "form-control",
-            attrs: { id: "player2-select" }
-          })
+          _c("tr", [
+            _c("td", [_vm._v("Score")]),
+            _vm._v(" "),
+            _c("td", { staticClass: "player-row" }, [
+              _c("div", { staticClass: "form-group" }, [
+                _c("input", {
+                  staticClass: "form-control",
+                  attrs: { type: "text", id: "player1-score" }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("td", { staticClass: "player-row" }, [
+              _c("div", { staticClass: "form-group" }, [
+                _c("input", {
+                  staticClass: "form-control",
+                  attrs: { type: "text", id: "player2-score" }
+                })
+              ])
+            ])
+          ])
         ])
       ])
     ])

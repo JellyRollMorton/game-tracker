@@ -108,29 +108,6 @@ class PlayerController extends Controller
             }            
         }
 
-
- 
-        
-
-
         return response()->json($response);
-
-//         echo '{
-// "results":
-// [
-//     {
-//         "id": "50",
-//         "text": "Portulacaceae "
-//     },
-//     {
-//         "id": "76",
-//         "text": "Styracaceae "
-//     },
-//     {
-//         "id": "137",
-//         "text": "Dipsacaceae"
-//     }
-// ]
-// }';
     }
 }

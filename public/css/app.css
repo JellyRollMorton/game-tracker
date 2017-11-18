@@ -8364,3 +8364,12 @@ body {
   padding: 3rem 1.5rem;
 }
 
+#add-game-player-table {
+  width: 100%;
+}
+
+.player-row {
+  width: 50%;
+  padding: 5px 10px 5px 10px;
+}
+

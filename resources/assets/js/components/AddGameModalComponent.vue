@@ -11,18 +11,47 @@
                 </div>
                 <div class="modal-body">
 
-                    <form>
-                        <div class="form-group">
-                            <label for="player1-select">Player 1</label>
-                            <select class="form-control" id="player1-select">
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="player2-select">Player 2</label>
-                            <select class="form-control" id="player2-select">
-                            </select>
-                        </div>
-                    </form>
+       <form>
+<table id="add-game-player-table">
+    <tr>
+        <th></th>
+        <th class="player-row">Player 1</th>
+        <th class="player-row">Player 2</th>
+    </tr>
+    <tr>
+        <td>Name</td>
+        <td class="player-row">
+            <div class="form-group">
+                <select class="form-control" id="player1-select">
+                </select>
+            </div>
+        </td>
+        <td class="player-row">
+            <div class="form-group">
+                <select class="form-control" id="player2-select">
+                </select>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>Score</td>
+        <td class="player-row">
+            <div class="form-group">
+                <input type="text" class="form-control" id="player1-score">
+            </div>
+        </td>
+        <td class="player-row">
+            <div class="form-group">
+                <input type="text" class="form-control" id="player2-score">
+            </div>
+        </td>
+    </tr>    
+</table>
+   </form>
+             
+                       
+                   
+                 
 
                 </div>
                 <div class="modal-footer">
@@ -68,11 +97,19 @@
                 });
             },
             addGameButtonClick: function(event) {
-                var player1Id = $('#player1-select').val();
-                var player2Id = $('#player2-select').val();
+                var players = [
+                    {
+                        'id' :  $('#player1-select').val(),
+                        'score' : $('#player1-score').val()
+                    },
+                    {
+                        'id' :  $('#player2-select').val(),
+                        'score' : $('#player2-score').val()
+                    },                    
+                ];
 
                 $.post("/api/games", {
-                        players : [player1Id, player2Id]
+                        players : players
                     })
                     .done(function(data) {
                         $('#add-game-modal').modal('hide');
