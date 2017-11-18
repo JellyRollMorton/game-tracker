@@ -6,6 +6,7 @@
  */
 
 require('./bootstrap');
+require('./select2.min');
 
 window.Vue = require('vue');
 
@@ -25,4 +26,8 @@ $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
+});
+
+$(".js-example-tags").select2({
+  tags: true
 });
