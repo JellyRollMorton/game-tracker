@@ -6,14 +6,34 @@
 @import "variables";
 
 // Bootstrap
+$resbi-orange:								#fe9935;
+$resbi-purple:								#410242;
+
+$navbar-inverse-bg:                         #f0f0f0 !default;
+$navbar-inverse-brand-color:                $resbi-purple !default;
+$navbar-inverse-brand-hover-color:          darken($navbar-inverse-brand-color, 15%) !default;
+$navbar-inverse-brand-hover-bg:             darken($navbar-inverse-bg, 15%) !default;
+
+// Inverted navbar links
+$navbar-inverse-link-color:                 #000 !default;
+$navbar-inverse-link-hover-color:           $resbi-orange !default;
+$navbar-inverse-link-active-color:          #000 !default;
+
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
+
+// App-specific CSS
+
+.navbar-brand {
+    font-size: 23px;
+    font-weight: 550;
+}
 
 body {
   padding-top: 5rem;
+  background-color: #fff;
 }
 
 .starter-template {
   padding: 3rem 1.5rem;
   text-align: center;
-  
 }
