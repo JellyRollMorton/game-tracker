@@ -8,6 +8,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="../../favicon.ico">
 
     <title>Foosball</title>
@@ -39,7 +40,7 @@
       </div>
     </nav>
 
-    <div class="container">
+    <div class="container" id="app">
 
       @yield('content')
 
