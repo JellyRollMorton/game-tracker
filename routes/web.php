@@ -11,6 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'DashboardController@show');
+Route::resource('players', 'PlayerController');
+Route::resource('games', 'GameController');
