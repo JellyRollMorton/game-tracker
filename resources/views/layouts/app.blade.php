@@ -14,6 +14,7 @@
 
     <!-- Bootstrap core CSS -->
     <link href="/css/app.css" rel="stylesheet">
+    <link href="/css/select2.min.css" rel="stylesheet">
   </head>
 
   <body>
@@ -49,5 +50,6 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="/js/app.js"></script>
+    <script src="/js/select2.min.js"></script>    
   </body>
 </html>
