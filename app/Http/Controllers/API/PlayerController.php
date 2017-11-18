@@ -35,7 +35,10 @@ class PlayerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $player = new \App\Player;
+        $player->name = 'David';
+        $player->save();
+        echo $player->id;
     }
 
     /**

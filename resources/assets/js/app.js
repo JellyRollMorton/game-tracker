@@ -17,6 +17,7 @@ window.Vue = require('vue');
  */
 
 Vue.component('add-game-modal', require('./components/AddGameModalComponent.vue'));
+Vue.component('add-player-modal', require('./components/AddPlayerModalComponent.vue'));
 Vue.component('dashboard', require('./components/DashboardComponent.vue'));
 
 const app = new Vue({
