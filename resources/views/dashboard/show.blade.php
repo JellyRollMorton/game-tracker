@@ -5,4 +5,13 @@
 <h1>Bootstrap starter template</h1>
 <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
 </div>
+
+<select class="form-control js-example-tags">
+  <option selected="selected">orange</option>
+  <option>white</option>
+  <option>purple</option>
+</select>
+
+</script>
 @endsection
+
