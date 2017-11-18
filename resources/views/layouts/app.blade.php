@@ -34,15 +34,17 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="#">Dashboard</a></li>
-            <li><a href="#about">About</a></li>
+            <li><a href="/about">About</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
-    <div class="container" id="app">
+    <div class="container">
 
+    <div id="app">
       @yield('content')
+      </div>
 
     </div><!-- /.container -->
 

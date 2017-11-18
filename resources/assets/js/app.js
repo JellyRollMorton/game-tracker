@@ -16,7 +16,8 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.component('add-game-modal', require('./components/AddGameModalComponent.vue'));
+Vue.component('dashboard', require('./components/DashboardComponent.vue'));
 
 const app = new Vue({
     el: '#app'
@@ -26,8 +27,4 @@ $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
-});
-
-$(".js-example-tags").select2({
-  tags: true
 });
