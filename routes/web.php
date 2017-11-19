@@ -17,3 +17,7 @@ Route::apiResource('api/players', 'API\PlayerController');
 Route::apiResource('api/games', 'API\GameController');
 Route::apiResource('api/player_rankings', 'API\PlayerRankingsController');
 Route::resource('players', 'PlayerController');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
