@@ -54,7 +54,7 @@
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button type="button" v-on:click.native="addGameButtonClick" class="btn btn-primary">Add Game</button>
+					<button type="button" v-on:click="addGameButtonClick" class="btn btn-primary">Add Game</button>
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 				</div>
 			</div>

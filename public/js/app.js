@@ -44185,11 +44185,7 @@ var render = function() {
               {
                 staticClass: "btn btn-primary",
                 attrs: { type: "button" },
-                nativeOn: {
-                  click: function($event) {
-                    _vm.addGameButtonClick($event)
-                  }
-                }
+                on: { click: _vm.addGameButtonClick }
               },
               [_vm._v("Add Game")]
             ),
@@ -44470,11 +44466,7 @@ var render = function() {
               {
                 staticClass: "btn btn-primary",
                 attrs: { type: "button" },
-                nativeOn: {
-                  click: function($event) {
-                    _vm.addPlayerButtonClick($event)
-                  }
-                }
+                on: { click: _vm.addPlayerButtonClick }
               },
               [_vm._v("Add Player")]
             ),
@@ -44670,11 +44662,7 @@ var render = function() {
           {
             staticClass: "btn btn-primary",
             attrs: { href: "#", role: "button" },
-            nativeOn: {
-              click: function($event) {
-                _vm.addPlayerButtonClick($event)
-              }
-            }
+            on: { click: _vm.addPlayerButtonClick }
           },
           [_vm._v("Add Player")]
         ),
@@ -44684,11 +44672,7 @@ var render = function() {
           {
             staticClass: "btn btn-primary",
             attrs: { href: "#", role: "button" },
-            nativeOn: {
-              click: function($event) {
-                _vm.addGameButtonClick($event)
-              }
-            }
+            on: { click: _vm.addGameButtonClick }
           },
           [_vm._v("Add Game")]
         )
