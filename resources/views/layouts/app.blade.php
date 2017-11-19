@@ -32,8 +32,8 @@
             </div>
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Dashboard</a></li>
-                    <li><a href="/about">About</a></li>
+                    <li class="{{ Request::is('/') ? 'active' : '' }}"><a href="/">Dashboard</a></li>
+                    <li class="{{ Request::is('about') ? 'active' : '' }}"><a href="/about">About</a></li>
                 </ul>
                 @if(Auth::user())
                 <p class="navbar-text pull-right">Logged in as {{Auth::user()->name}}</p>
