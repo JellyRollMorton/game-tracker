@@ -38,10 +38,6 @@
                 dashboardComponent.playerRankingTable = $('#player-ranking-table').DataTable({
                     "ajax": '/api/player_rankings'
                 });
-
-
-
-
             });
 
         },

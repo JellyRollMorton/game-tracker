@@ -115,6 +115,10 @@
                     })
                     .done(function(data) {
                         $('#add-game-modal').modal('hide');
+                        $('#player1-select').val('').trigger('change');
+                        $('#player1-score').val('');
+                        $('#player2-select').val('').trigger('change');
+                        $('#player2-score').val('');
                         addGameModalComponent.$bus.emit('game-added', {});
                     });
             }

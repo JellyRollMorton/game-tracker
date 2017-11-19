@@ -44120,6 +44120,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 players: players
             }).done(function (data) {
                 $('#add-game-modal').modal('hide');
+                $('#player1-select').val('').trigger('change');
+                $('#player1-score').val('');
+                $('#player2-select').val('').trigger('change');
+                $('#player2-score').val('');
                 addGameModalComponent.$bus.emit('game-added', {});
             });
         }
@@ -44363,6 +44367,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 name: name
             }).done(function (data) {
                 $('#add-player-modal').modal('hide');
+                $('#add-player-modal-name').val('');
                 addPlayerModalComponent.$bus.emit('player-added', {});
             });
         }

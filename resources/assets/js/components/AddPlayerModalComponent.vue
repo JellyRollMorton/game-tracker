@@ -44,6 +44,7 @@
                     })
                     .done(function(data) {
                         $('#add-player-modal').modal('hide');
+                        $('#add-player-modal-name').val('');
                         addPlayerModalComponent.$bus.emit('player-added', {});
                     });
             }
