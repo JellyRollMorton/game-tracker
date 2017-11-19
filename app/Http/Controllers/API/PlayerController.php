@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\API;
 
-use \App\Player;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Player;
+use Illuminate\Http\Request;
 
 class PlayerController extends Controller
 {
@@ -31,7 +31,7 @@ class PlayerController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -48,7 +48,7 @@ class PlayerController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -59,7 +59,7 @@ class PlayerController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -70,8 +70,8 @@ class PlayerController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -82,7 +82,7 @@ class PlayerController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -96,7 +96,7 @@ class PlayerController extends Controller
             'results' => []
         ];
 
-        $searchQuery= $request->input()['q'];
+        $searchQuery = $request->input()['q'];
 
         // the term parameter only exists if the user has typed more than one character
         if (array_key_exists('term', $searchQuery)) {
@@ -104,12 +104,12 @@ class PlayerController extends Controller
             // SQL injection
             $players = Player::where('name', 'ilike', '%' . $searchQuery['term'] . '%')->limit(10)->get();
 
-            foreach($players as $player) {
+            foreach ($players as $player) {
                 $response['results'][] = [
                     'id' => $player->id,
                     'text' => $player->name
                 ];
-            }            
+            }
         }
 
         return response()->json($response);

@@ -13,5 +13,5 @@ class Player extends Model
      */
     protected $fillable = [
         'name',
-    ];	
+    ];
 }

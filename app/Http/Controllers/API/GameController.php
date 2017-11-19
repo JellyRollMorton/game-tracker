@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\API;
 
 use App\Game;
-use App\Player;
 use App\GamePlayer;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Player;
+use Illuminate\Http\Request;
 
 class GameController extends Controller
 {
@@ -33,7 +33,7 @@ class GameController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -49,7 +49,7 @@ class GameController extends Controller
 
         if (count($inputs['players']) > 1) {
             // validate that the players exists
-            foreach($inputs['players'] as $playerAttrs) {            
+            foreach ($inputs['players'] as $playerAttrs) {
                 $player = Player::find($playerAttrs['id']);
                 if (!$player) {
                     return response()->json(['error' => 'Player is invalid'], 400);
@@ -59,7 +59,7 @@ class GameController extends Controller
             $game = new Game;
             $game->save();
 
-            foreach($inputs['players'] as $playerAttrs) {
+            foreach ($inputs['players'] as $playerAttrs) {
                 $gamePlayer = new GamePlayer;
                 $gamePlayer->game_id = $game->id;
                 $gamePlayer->player_id = $playerAttrs['id'];
@@ -76,7 +76,7 @@ class GameController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -87,7 +87,7 @@ class GameController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -98,8 +98,8 @@ class GameController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -110,7 +110,7 @@ class GameController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

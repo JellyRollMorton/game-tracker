@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreatePlayerRankingsView extends Migration
 {
@@ -69,7 +69,7 @@ WHERE game_rank != 1
 GROUP BY player_id) loss_table
   ON loss_table.player_id = players.id) win_totals) win_ratios
 EOT;
-  
+
         DB::statement($viewSql);
     }
 

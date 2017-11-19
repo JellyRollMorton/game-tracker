@@ -3,15 +3,14 @@
 namespace Tests\Unit;
 
 use App\GamePlayer;
-use App\Game;
 use App\Player;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class GamePlayerTest extends TestCase
 {
-	use DatabaseMigrations;
+    use DatabaseMigrations;
 
     /**
      * @expectedException \Illuminate\Database\QueryException
@@ -20,11 +19,11 @@ class GamePlayerTest extends TestCase
      */
     public function testGamePlayerNoGame()
     {
-    	// If there is no game defined, an exception should be thrown
-    	$gamePlayer = new GamePlayer();
-    	$gamePlayer->score = 5;
-    	$gamePlayer->player_id = factory(Player::class)->create()->id;
-    	$gamePlayer->save();
+        // If there is no game defined, an exception should be thrown
+        $gamePlayer = new GamePlayer();
+        $gamePlayer->score = 5;
+        $gamePlayer->player_id = factory(Player::class)->create()->id;
+        $gamePlayer->save();
     }
 
     /**
@@ -34,12 +33,12 @@ class GamePlayerTest extends TestCase
      */
     public function testGamePlayerNoScore()
     {
-    	// If there is no score defined, an exception should be thrown
-    	$gamePlayer = new GamePlayer();
-    	$gamePlayer->game_id = \App\Game::create()->id;
-    	$gamePlayer->player_id = factory(Player::class)->create()->id;
-    	$gamePlayer->save();
-    }    
+        // If there is no score defined, an exception should be thrown
+        $gamePlayer = new GamePlayer();
+        $gamePlayer->game_id = \App\Game::create()->id;
+        $gamePlayer->player_id = factory(Player::class)->create()->id;
+        $gamePlayer->save();
+    }
 
     /**
      * @expectedException \Illuminate\Database\QueryException
@@ -48,12 +47,12 @@ class GamePlayerTest extends TestCase
      */
     public function testGamePlayerNoPlayer()
     {
-    	// If there is no player is defined, an exception should be thrown
-    	$gamePlayer = new GamePlayer();
-    	$gamePlayer->score = 5;
-    	$gamePlayer->game_id = \App\Game::create()->id;
-    	$gamePlayer->save();
-    }    
+        // If there is no player is defined, an exception should be thrown
+        $gamePlayer = new GamePlayer();
+        $gamePlayer->score = 5;
+        $gamePlayer->game_id = \App\Game::create()->id;
+        $gamePlayer->save();
+    }
 
     /**
      *
@@ -61,11 +60,11 @@ class GamePlayerTest extends TestCase
      */
     public function testGamePlayer()
     {
-    	// If all required fields are present, the record should get created
-    	$gamePlayer = new GamePlayer();
-    	$gamePlayer->score = 5;
-    	$gamePlayer->game_id = \App\Game::create()->id;
-    	$gamePlayer->player_id = factory(Player::class)->create()->id;
-    	$this->assertTrue($gamePlayer->save());
-    }       
+        // If all required fields are present, the record should get created
+        $gamePlayer = new GamePlayer();
+        $gamePlayer->score = 5;
+        $gamePlayer->game_id = \App\Game::create()->id;
+        $gamePlayer->player_id = factory(Player::class)->create()->id;
+        $this->assertTrue($gamePlayer->save());
+    }
 }

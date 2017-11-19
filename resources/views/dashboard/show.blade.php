@@ -2,7 +2,7 @@
 
 @section('content')
 
-<dashboard></dashboard>
+    <dashboard></dashboard>
 
 @endsection
 

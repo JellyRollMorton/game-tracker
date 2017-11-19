@@ -15,8 +15,8 @@ class GamePlayer extends Model
         'player_id', 'game_id', 'score',
     ];
 
-	public function player()
-	{
-		return $this->belongsTo('App\Player');
-	}
+    public function player()
+    {
+        return $this->belongsTo('App\Player');
+    }
 }

@@ -2,15 +2,15 @@
 
 namespace Tests\Unit;
 
-use App\User;
 use App\Player;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class PlayerTest extends TestCase
 {
-	use DatabaseMigrations;
+    use DatabaseMigrations;
 
     /**
      * @expectedException \Illuminate\Database\QueryException
@@ -19,10 +19,10 @@ class PlayerTest extends TestCase
      */
     public function testPlayerNoName()
     {
-    	// Test that a player can't be saved with no name.  This should
-    	// throw an exception.
-    	$player = new Player();
-    	$player->save();
+        // Test that a player can't be saved with no name.  This should
+        // throw an exception.
+        $player = new Player();
+        $player->save();
     }
 
     public function testPlayerSearchApi()
@@ -55,7 +55,7 @@ class PlayerTest extends TestCase
 
         // both players should be returned
         $response->assertJson(['results' => [
-            ['id' => 1, 'text' => 'Player1'],            
+            ['id' => 1, 'text' => 'Player1'],
             ['id' => 2, 'text' => 'Player2']
         ]]);
 
@@ -68,5 +68,5 @@ class PlayerTest extends TestCase
         $response->assertJsonMissing(['results' => [
             ['id' => 2, 'text' => 'Player2']
         ]]);
-    }    
+    }
 }

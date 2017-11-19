@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use App\PlayerRanking;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class PlayerRankingsController extends Controller
 {
@@ -20,14 +20,13 @@ class PlayerRankingsController extends Controller
         ];
 
         $playerRankings = PlayerRanking::with('player')->get();
-        foreach($playerRankings as $playerRanking) {
-            $response['data'][] = 
+        foreach ($playerRankings as $playerRanking) {
+            $response['data'][] =
                 [
-                $playerRanking->rank,
-                $playerRanking->player->name,
-              $playerRanking->win_count,
-              $playerRanking->loss_count]
-              ;
+                    $playerRanking->rank,
+                    $playerRanking->player->name,
+                    $playerRanking->win_count,
+                    $playerRanking->loss_count];
         }
 
         return response()->json($response);
@@ -46,7 +45,7 @@ class PlayerRankingsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -57,7 +56,7 @@ class PlayerRankingsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -68,7 +67,7 @@ class PlayerRankingsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -79,8 +78,8 @@ class PlayerRankingsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -91,7 +90,7 @@ class PlayerRankingsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
