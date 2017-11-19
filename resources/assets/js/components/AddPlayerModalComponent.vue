@@ -38,11 +38,13 @@
             addPlayerButtonClick: function(event) {
                 var name = $('#add-player-modal-name').val();
 
+                var addPlayerModalComponent = this;
                 $.post("/api/players", {
                         name: name
                     })
                     .done(function(data) {
                         $('#add-player-modal').modal('hide');
+                        addPlayerModalComponent.$bus.emit('player-added', {});
                     });
             }
         }

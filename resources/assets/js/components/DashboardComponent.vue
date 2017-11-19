@@ -10,7 +10,7 @@
 
   </div>
 
-  <table id="example" class="table display" cellspacing="0" width="100%">
+  <table id="player-ranking-table" class="table display" cellspacing="0" width="100%">
         <thead>
             <tr>
                 <th>Rank</th>
@@ -26,24 +26,38 @@
 
 <script>
     export default {
+        created() {
+            this.$bus.on('game-added', this.refreshPlayerRankings);
+            this.$bus.on('player-added', this.refreshPlayerRankings);
+        },
         mounted() {
             console.log('Dashboard mounted.');
 
-                  $(document).ready(function() {
-          $('#example').DataTable( {
-              "ajax": '/api/player_rankings'
-          } );
-      } );
+            var dashboardComponent = this
+            $(document).ready(function() {
+                dashboardComponent.playerRankingTable = $('#player-ranking-table').DataTable({
+                    "ajax": '/api/player_rankings'
+                });
+
+
+
+
+            });
 
         },
         methods: {
-          addGameButtonClick: function(event) {
-            $('#add-game-modal').modal();
-          },
+            refreshPlayerRankings: function(event) {
+                this.playerRankingTable.ajax.reload();
+                console.log('refreshing player rankings');
+            },
+            addGameButtonClick: function(event) {
+                this.$bus.emit('game-added', {});
+                $('#add-game-modal').modal();
+            },
 
-          addPlayerButtonClick: function(event) {
-            $('#add-player-modal').modal();
-          }          
+            addPlayerButtonClick: function(event) {
+                $('#add-player-modal').modal();
+            }
         }
     }
 </script>

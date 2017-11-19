@@ -10,6 +10,10 @@ require('./select2.min');
 
 window.Vue = require('vue');
 
+import VueBus from 'vue-bus';
+
+Vue.use(VueBus);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

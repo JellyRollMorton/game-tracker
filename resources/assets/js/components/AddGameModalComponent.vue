@@ -1,5 +1,4 @@
 <template>
-
     <div class="modal fade" id="add-game-modal">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -67,7 +66,10 @@
 <script>
     export default {
         mounted() {
-            console.log('Component mounted.')
+            console.log('Component mounted.');
+
+
+            //console.log(bus);
 
             this.enablePlayerSearchSelect2($("#player1-select"));
             this.enablePlayerSearchSelect2($("#player2-select"));
@@ -97,22 +99,23 @@
                 });
             },
             addGameButtonClick: function(event) {
-                var players = [
-                    {
-                        'id' :  $('#player1-select').val(),
-                        'score' : $('#player1-score').val()
-                    },
-                    {
-                        'id' :  $('#player2-select').val(),
-                        'score' : $('#player2-score').val()
-                    },                    
-                ];
+                console.log('triggering');
 
+                var players = [{
+                    'id': $('#player1-select').val(),
+                    'score': $('#player1-score').val()
+                }, {
+                    'id': $('#player2-select').val(),
+                    'score': $('#player2-score').val()
+                }, ];
+
+                var addGameModalComponent = this;
                 $.post("/api/games", {
-                        players : players
+                        players: players
                     })
                     .done(function(data) {
                         $('#add-game-modal').modal('hide');
+                        addGameModalComponent.$bus.emit('game-added', {});
                     });
             }
         }

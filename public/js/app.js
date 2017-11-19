@@ -11332,13 +11332,17 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(12);
-module.exports = __webpack_require__(49);
+module.exports = __webpack_require__(50);
 
 
 /***/ }),
 /* 12 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_bus__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_bus___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_bus__);
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -11351,15 +11355,19 @@ __webpack_require__(36);
 
 window.Vue = __webpack_require__(37);
 
+
+
+Vue.use(__WEBPACK_IMPORTED_MODULE_0_vue_bus___default.a);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('add-game-modal', __webpack_require__(40));
-Vue.component('add-player-modal', __webpack_require__(43));
-Vue.component('dashboard', __webpack_require__(46));
+Vue.component('add-game-modal', __webpack_require__(41));
+Vue.component('add-player-modal', __webpack_require__(44));
+Vue.component('dashboard', __webpack_require__(47));
 
 var app = new Vue({
     el: '#app'
@@ -43885,12 +43893,72 @@ exports.clearImmediate = clearImmediate;
 /* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * vue-bus v1.0.0
+ * https://github.com/yangmingshan/vue-bus
+ * @license MIT
+ */
+(function(global, factory) {
+   true ? module.exports = factory() :
+  typeof define === 'function' && define.amd ? define(factory) :
+  (global.VueBus = factory());
+}(this, (function() { 'use strict';
+
+  function VueBus(Vue) {
+
+    var bus = new Vue();
+
+    Object.defineProperties(bus, {
+      on: {
+        get: function() {
+          return this.$on;
+        }
+      },
+      once: {
+        get: function() {
+          return this.$once;
+        }
+      },
+      off: {
+        get: function() {
+          return this.$off;
+        }
+      },
+      emit: {
+        get: function() {
+          return this.$emit;
+        }
+      }
+    });
+
+    Vue.bus = bus;
+
+    Object.defineProperty(Vue.prototype, '$bus', {
+      get: function() {
+        return bus;
+      }
+    });
+  }
+
+  if (typeof window !== 'undefined' && window.Vue) {
+    window.Vue.use(VueBus);
+  }
+
+  return VueBus;
+
+})));
+
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
 var disposed = false
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(41)
+var __vue_script__ = __webpack_require__(42)
 /* template */
-var __vue_template__ = __webpack_require__(42)
+var __vue_template__ = __webpack_require__(43)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -43930,12 +43998,11 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
 //
 //
 //
@@ -44006,6 +44073,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     mounted: function mounted() {
         console.log('Component mounted.');
 
+        //console.log(bus);
+
         this.enablePlayerSearchSelect2($("#player1-select"));
         this.enablePlayerSearchSelect2($("#player2-select"));
     },
@@ -44036,6 +44105,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         addGameButtonClick: function addGameButtonClick(event) {
+            console.log('triggering');
+
             var players = [{
                 'id': $('#player1-select').val(),
                 'score': $('#player1-score').val()
@@ -44044,17 +44115,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 'score': $('#player2-score').val()
             }];
 
+            var addGameModalComponent = this;
             $.post("/api/games", {
                 players: players
             }).done(function (data) {
                 $('#add-game-modal').modal('hide');
+                addGameModalComponent.$bus.emit('game-added', {});
             });
         }
     }
 });
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -44191,15 +44264,15 @@ if (false) {
 }
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(44)
+var __vue_script__ = __webpack_require__(45)
 /* template */
-var __vue_template__ = __webpack_require__(45)
+var __vue_template__ = __webpack_require__(46)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -44239,7 +44312,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44285,17 +44358,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         addPlayerButtonClick: function addPlayerButtonClick(event) {
             var name = $('#add-player-modal-name').val();
 
+            var addPlayerModalComponent = this;
             $.post("/api/players", {
                 name: name
             }).done(function (data) {
                 $('#add-player-modal').modal('hide');
+                addPlayerModalComponent.$bus.emit('player-added', {});
             });
         }
     }
 });
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -44389,15 +44464,15 @@ if (false) {
 }
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(47)
+var __vue_script__ = __webpack_require__(48)
 /* template */
-var __vue_template__ = __webpack_require__(48)
+var __vue_template__ = __webpack_require__(49)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -44437,7 +44512,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44470,29 +44545,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mounted: function mounted() {
-    console.log('Dashboard mounted.');
+    created: function created() {
+        this.$bus.on('game-added', this.refreshPlayerRankings);
+        this.$bus.on('player-added', this.refreshPlayerRankings);
+    },
+    mounted: function mounted() {
+        console.log('Dashboard mounted.');
 
-    $(document).ready(function () {
-      $('#example').DataTable({
-        "ajax": '/api/player_rankings'
-      });
-    });
-  },
-
-  methods: {
-    addGameButtonClick: function addGameButtonClick(event) {
-      $('#add-game-modal').modal();
+        var dashboardComponent = this;
+        $(document).ready(function () {
+            dashboardComponent.playerRankingTable = $('#player-ranking-table').DataTable({
+                "ajax": '/api/player_rankings'
+            });
+        });
     },
 
-    addPlayerButtonClick: function addPlayerButtonClick(event) {
-      $('#add-player-modal').modal();
+    methods: {
+        refreshPlayerRankings: function refreshPlayerRankings(event) {
+            this.playerRankingTable.ajax.reload();
+            console.log('refreshing player rankings');
+        },
+        addGameButtonClick: function addGameButtonClick(event) {
+            this.$bus.emit('game-added', {});
+            $('#add-game-modal').modal();
+        },
+
+        addPlayerButtonClick: function addPlayerButtonClick(event) {
+            $('#add-player-modal').modal();
+        }
     }
-  }
 });
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -44542,7 +44627,7 @@ var staticRenderFns = [
       "table",
       {
         staticClass: "table display",
-        attrs: { id: "example", cellspacing: "0", width: "100%" }
+        attrs: { id: "player-ranking-table", cellspacing: "0", width: "100%" }
       },
       [
         _c("thead", [
@@ -44570,7 +44655,7 @@ if (false) {
 }
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
