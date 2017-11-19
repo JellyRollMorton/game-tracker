@@ -9,54 +9,49 @@
                     </button>
                 </div>
                 <div class="modal-body">
-        <div class="alert alert-danger" v-if="errors.length > 0">
-        <strong>Error:</strong>
-          <li v-for="error in errors">
-          {{ error }}
-          </li>
-        </div>
-       <form>
-<table id="add-game-player-table">
-    <tr>
-        <th></th>
-        <th class="player-row">Player 1</th>
-        <th class="player-row">Player 2</th>
-    </tr>
-    <tr>
-        <td>Name</td>
-        <td class="player-row">
-            <div class="form-group">
-                <select class="form-control" id="player1-select">
-                </select>
-            </div>
-        </td>
-        <td class="player-row">
-            <div class="form-group">
-                <select class="form-control" id="player2-select">
-                </select>
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <td>Score</td>
-        <td class="player-row">
-            <div class="form-group">
-                <input type="text" class="form-control" id="player1-score">
-            </div>
-        </td>
-        <td class="player-row">
-            <div class="form-group">
-                <input type="text" class="form-control" id="player2-score">
-            </div>
-        </td>
-    </tr>    
-</table>
-   </form>
-             
-                       
-                   
-                 
-
+                    <div class="alert alert-danger" v-if="errors.length > 0">
+                        <strong>Error:</strong>
+                        <li v-for="error in errors">
+                            {{ error }}
+                        </li>
+                    </div>
+                    <form>
+                        <table id="add-game-player-table">
+                            <tr>
+                                <th></th>
+                                <th class="player-row">Player 1</th>
+                                <th class="player-row">Player 2</th>
+                            </tr>
+                            <tr>
+                                <td>Name</td>
+                                <td class="player-row">
+                                    <div class="form-group">
+                                        <select class="form-control" id="player1-select">
+                                        </select>
+                                    </div>
+                                </td>
+                                <td class="player-row">
+                                    <div class="form-group">
+                                        <select class="form-control" id="player2-select">
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Score</td>
+                                <td class="player-row">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="player1-score">
+                                    </div>
+                                </td>
+                                <td class="player-row">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="player2-score">
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" v-on:click="addGameButtonClick" class="btn btn-primary">Add Game</button>
@@ -65,13 +60,12 @@
             </div>
         </div>
     </div>
-
 </template>
 
 <script>
     export default {
         mounted() {
-            console.log('Component mounted.');
+                console.log('Component mounted.');
 
 
             //console.log(bus);

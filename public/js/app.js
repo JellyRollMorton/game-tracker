@@ -11343,7 +11343,6 @@ module.exports = __webpack_require__(50);
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_bus__ = __webpack_require__(40);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_bus___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_bus__);
-
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -44067,12 +44066,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
@@ -44173,7 +44166,11 @@ var render = function() {
                     _vm._v(" "),
                     _vm._l(_vm.errors, function(error) {
                       return _c("li", [
-                        _vm._v("\n          " + _vm._s(error) + "\n          ")
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(error) +
+                            "\n                    "
+                        )
                       ])
                     })
                   ],
@@ -44388,11 +44385,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
@@ -44455,7 +44447,11 @@ var render = function() {
                     _vm._v(" "),
                     _vm._l(_vm.errors, function(error) {
                       return _c("li", [
-                        _vm._v("\n          " + _vm._s(error) + "\n          ")
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(error) +
+                            "\n                    "
+                        )
                       ])
                     })
                   ],
@@ -44594,11 +44590,6 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
 //
 //
 //
