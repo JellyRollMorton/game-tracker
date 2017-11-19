@@ -44626,7 +44626,7 @@ var staticRenderFns = [
     return _c(
       "table",
       {
-        staticClass: "table display",
+        staticClass: "table table-striped table-bordered table-hover display",
         attrs: { id: "player-ranking-table", cellspacing: "0", width: "100%" }
       },
       [

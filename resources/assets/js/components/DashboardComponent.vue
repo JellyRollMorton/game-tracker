@@ -10,7 +10,7 @@
 
   </div>
 
-  <table id="player-ranking-table" class="table display" cellspacing="0" width="100%">
+  <table id="player-ranking-table" class="table table-striped table-bordered table-hover display" cellspacing="0" width="100%">
         <thead>
             <tr>
                 <th>Rank</th>
