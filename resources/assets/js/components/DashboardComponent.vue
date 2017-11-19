@@ -10,7 +10,7 @@
 
   </div>
 
-  <table id="example" class="display" cellspacing="0" width="100%">
+  <table id="example" class="table display" cellspacing="0" width="100%">
         <thead>
             <tr>
                 <th>Rank</th>

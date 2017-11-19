@@ -44541,7 +44541,7 @@ var staticRenderFns = [
     return _c(
       "table",
       {
-        staticClass: "display",
+        staticClass: "table display",
         attrs: { id: "example", cellspacing: "0", width: "100%" }
       },
       [
