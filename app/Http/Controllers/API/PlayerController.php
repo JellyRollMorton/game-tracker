@@ -9,26 +9,6 @@ use Illuminate\Http\Request;
 class PlayerController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
@@ -36,7 +16,7 @@ class PlayerController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        $request->validate([
             'name' => 'required'
         ]);
 
@@ -46,50 +26,11 @@ class PlayerController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Allow for player names to be searched for via the Datatables remote data source API
      *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return mixed
      */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
     public function search(Request $request)
     {
         $response = [
@@ -100,8 +41,7 @@ class PlayerController extends Controller
 
         // the term parameter only exists if the user has typed more than one character
         if (array_key_exists('term', $searchQuery)) {
-            // the search value is processed as a bind variable, so it's protected against
-            // SQL injection
+            // the search value is processed as a bind variable, so it's protected against SQL injection
             $players = Player::where('name', 'ilike', '%' . $searchQuery['term'] . '%')->limit(10)->get();
 
             foreach ($players as $player) {

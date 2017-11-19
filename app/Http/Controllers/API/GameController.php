@@ -11,26 +11,6 @@ use Illuminate\Http\Request;
 class GameController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
@@ -38,15 +18,19 @@ class GameController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        $request->validate([
             'players.*.id' => 'required',
             'players.*.score' => 'required',
+        ]);
+
+        $request->validate([
             'players.*.id' => 'distinct',
             'players.*.score' => 'distinct'
         ]);
 
         $inputs = $request->input();
 
+        // at least two players must be identified
         if (count($inputs['players']) > 1) {
             // validate that the players exists
             foreach ($inputs['players'] as $playerAttrs) {
@@ -59,6 +43,7 @@ class GameController extends Controller
             $game = new Game;
             $game->save();
 
+            // create a gamePlayer record for each player's score in the game
             foreach ($inputs['players'] as $playerAttrs) {
                 $gamePlayer = new GamePlayer;
                 $gamePlayer->game_id = $game->id;
@@ -71,50 +56,5 @@ class GameController extends Controller
         } else {
             return response()->json(['error' => 'At least two players is required'], 400);
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

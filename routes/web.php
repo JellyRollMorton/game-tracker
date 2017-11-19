@@ -18,8 +18,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::apiResource('api/players', 'API\PlayerController');
     Route::apiResource('api/games', 'API\GameController');
     Route::apiResource('api/player_rankings', 'API\PlayerRankingsController');
-    Route::resource('players', 'PlayerController');
-    Route::get('/home', 'HomeController@index')->name('home');
 });
 
 Auth::routes();

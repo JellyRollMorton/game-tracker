@@ -55,8 +55,8 @@ class PlayerTest extends TestCase
 
         // both players should be returned
         $response->assertJson(['results' => [
-            ['id' => 1, 'text' => 'Player1'],
-            ['id' => 2, 'text' => 'Player2']
+            ['id' => $player1->id, 'text' => 'Player1'],
+            ['id' => $player2->id, 'text' => 'Player2']
         ]]);
 
         // search only for player 1
