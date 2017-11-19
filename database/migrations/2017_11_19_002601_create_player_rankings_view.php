@@ -68,7 +68,7 @@ FROM ranked_games) game_wins
 WHERE game_rank != 1
 GROUP BY player_id) loss_table
   ON loss_table.player_id = players.id) win_totals) win_ratios
-EOT;        
+EOT;
   
         DB::statement($viewSql);
     }

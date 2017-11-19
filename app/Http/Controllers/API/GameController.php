@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Game;
+use App\Player;
 use App\GamePlayer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -46,15 +47,29 @@ class GameController extends Controller
 
         $inputs = $request->input();
 
-        $game = new Game;
-        $game->save();
+        if (count($inputs['players']) > 1) {
+            // validate that the players exists
+            foreach($inputs['players'] as $playerAttrs) {            
+                $player = Player::find($playerAttrs['id']);
+                if (!$player) {
+                    return response()->json(['error' => 'Player is invalid'], 400);
+                }
+            }
 
-        foreach($inputs['players'] as $player) {
-            $gamePlayer = new GamePlayer;
-            $gamePlayer->game_id = $game->id;
-            $gamePlayer->player_id = $player['id'];
-            $gamePlayer->score = $player['score'];
-            $gamePlayer->save();
+            $game = new Game;
+            $game->save();
+
+            foreach($inputs['players'] as $playerAttrs) {
+                $gamePlayer = new GamePlayer;
+                $gamePlayer->game_id = $game->id;
+                $gamePlayer->player_id = $playerAttrs['id'];
+                $gamePlayer->score = $playerAttrs['score'];
+                $gamePlayer->save();
+            }
+
+            return response()->json($game);
+        } else {
+            return response()->json(['error' => 'At least two players is required'], 400);
         }
     }
 
