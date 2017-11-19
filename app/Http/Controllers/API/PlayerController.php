@@ -102,7 +102,7 @@ class PlayerController extends Controller
         if (array_key_exists('term', $searchQuery)) {
             // the search value is processed as a bind variable, so it's protected against
             // SQL injection
-            $players = Player::where('name', 'like', '%' . $searchQuery['term'] . '%')->limit(10)->get();
+            $players = Player::where('name', 'ilike', '%' . $searchQuery['term'] . '%')->limit(10)->get();
 
             foreach($players as $player) {
                 $response['results'][] = [
