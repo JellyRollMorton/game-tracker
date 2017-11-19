@@ -47,7 +47,6 @@
                 console.log('refreshing player rankings');
             },
             addGameButtonClick: function(event) {
-                this.$bus.emit('game-added', {});
                 $('#add-game-modal').modal();
             },
 

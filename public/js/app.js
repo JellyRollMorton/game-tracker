@@ -44115,8 +44115,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         addGameButtonClick: function addGameButtonClick(event) {
-            console.log('triggering');
-
             var players = [{
                 'id': $('#player1-select').val(),
                 'score': $('#player1-score').val()
@@ -44645,7 +44643,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             console.log('refreshing player rankings');
         },
         addGameButtonClick: function addGameButtonClick(event) {
-            this.$bus.emit('game-added', {});
             $('#add-game-modal').modal();
         },
 

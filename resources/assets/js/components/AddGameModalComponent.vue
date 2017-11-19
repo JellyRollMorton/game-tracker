@@ -109,8 +109,6 @@
                 });
             },
             addGameButtonClick: function(event) {
-                console.log('triggering');
-
                 var players = [{
                     'id': $('#player1-select').val(),
                     'score': $('#player1-score').val()
