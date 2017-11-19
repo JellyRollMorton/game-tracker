@@ -38,6 +38,11 @@
             <li class="active"><a href="#">Dashboard</a></li>
             <li><a href="/about">About</a></li>
           </ul>
+
+          @if(Auth::user())
+          <p class="navbar-text pull-right">Logged in as {{Auth::user()->name}}</p> 
+          @endif
+
         </div><!--/.nav-collapse -->
       </div>
     </nav>
