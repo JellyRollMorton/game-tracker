@@ -44068,76 +44068,76 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    mounted: function mounted() {
-        console.log('Component mounted.');
+	mounted: function mounted() {
+		console.log('Component mounted.');
 
-        //console.log(bus);
+		//console.log(bus);
 
-        this.enablePlayerSearchSelect2($("#player1-select"));
-        this.enablePlayerSearchSelect2($("#player2-select"));
-    },
+		this.enablePlayerSearchSelect2($("#player1-select"));
+		this.enablePlayerSearchSelect2($("#player2-select"));
+	},
 
-    data: function data() {
-        return {
-            errors: []
-        };
-    },
-    methods: {
-        enablePlayerSearchSelect2: function enablePlayerSearchSelect2(selectElement) {
-            selectElement.select2({
-                width: '100%',
-                ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
-                    url: "/api/players/search",
-                    dataType: 'json',
-                    quietMillis: 250,
-                    data: function data(term, page) {
-                        return {
-                            q: term // search term
-                        };
-                    },
-                    results: function results(data, page) {
-                        // parse the results into the format expected by Select2.
-                        // since we are using custom formatting functions we do not need to alter the remote JSON data
-                        return {
-                            results: data.items
-                        };
-                    },
-                    cache: true
-                },
-                theme: "bootstrap"
-            });
-        },
-        addGameButtonClick: function addGameButtonClick(event) {
-            var players = [{
-                'id': $('#player1-select').val(),
-                'score': $('#player1-score').val()
-            }, {
-                'id': $('#player2-select').val(),
-                'score': $('#player2-score').val()
-            }];
+	data: function data() {
+		return {
+			errors: []
+		};
+	},
+	methods: {
+		enablePlayerSearchSelect2: function enablePlayerSearchSelect2(selectElement) {
+			selectElement.select2({
+				width: '100%',
+				ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
+					url: "/api/players/search",
+					dataType: 'json',
+					quietMillis: 250,
+					data: function data(term, page) {
+						return {
+							q: term // search term
+						};
+					},
+					results: function results(data, page) {
+						// parse the results into the format expected by Select2.
+						// since we are using custom formatting functions we do not need to alter the remote JSON data
+						return {
+							results: data.items
+						};
+					},
+					cache: true
+				},
+				theme: "bootstrap"
+			});
+		},
+		addGameButtonClick: function addGameButtonClick(event) {
+			var players = [{
+				'id': $('#player1-select').val(),
+				'score': $('#player1-score').val()
+			}, {
+				'id': $('#player2-select').val(),
+				'score': $('#player2-score').val()
+			}];
 
-            var addGameModalComponent = this;
-            $.post("/api/games", {
-                players: players
-            }).done(function (data) {
-                $('#add-game-modal').modal('hide');
-                $('#player1-select').val('').trigger('change');
-                $('#player1-score').val('');
-                $('#player2-select').val('').trigger('change');
-                $('#player2-score').val('');
-                addGameModalComponent.$bus.emit('game-added', {});
-                addGameModalComponent.errors = [];
-            }).fail(function (data) {
-                var errors = [];
+			var addGameModalComponent = this;
+			$.post("/api/games", {
+				players: players
+			}).done(function (data) {
+				$('#add-game-modal').modal('hide');
+				$('#player1-select').val('').trigger('change');
+				$('#player1-score').val('');
+				$('#player2-select').val('').trigger('change');
+				$('#player2-score').val('');
+				addGameModalComponent.$bus.emit('game-added', {});
+				addGameModalComponent.errors = [];
+			}).fail(function (data) {
+				var errors = [];
 
-                for (var k in data.responseJSON.errors) {
-                    errors.push(data.responseJSON.errors[k][0]);
-                }
+				for (var k in data.responseJSON.errors) {
+					errors.push(data.responseJSON.errors[k][0]);
+				}
 
-                addGameModalComponent.errors = errors;
-            });
-        }
-    }
+				addGameModalComponent.errors = errors;
+			});
+		}
+	}
 });
 
 /***/ }),
@@ -44167,9 +44167,7 @@ var render = function() {
                     _vm._l(_vm.errors, function(error) {
                       return _c("li", [
                         _vm._v(
-                          "\n                        " +
-                            _vm._s(error) +
-                            "\n                    "
+                          "\n\t\t\t\t\t\t" + _vm._s(error) + "\n\t\t\t\t\t"
                         )
                       ])
                     })

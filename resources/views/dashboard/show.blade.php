@@ -4,7 +4,5 @@
 
 <dashboard></dashboard>
 
-</script>
-
 @endsection
 
