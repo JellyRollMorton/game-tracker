@@ -3,8 +3,8 @@
         <add-game-modal></add-game-modal>
         <add-player-modal></add-player-modal>
         <div class="toolbar-buttons pull-right">
-            <a class="btn btn-primary" v-on:click="addPlayerButtonClick" href="#" role="button">Add Player</a>
-            <a class="btn btn-primary" v-on:click="addGameButtonClick" href="#" role="button">Add Game</a>
+            <a class="btn btn-primary" v-on:click="addPlayerButtonClick" v-on:touchstart="addPlayerButtonClick" href="#" role="button">Add Player</a>
+            <a class="btn btn-primary" v-on:click="addGameButtonClick" v-on:touchstart="addGameButtonClick" href="#" role="button">Add Game</a>
         </div>
         <table id="player-ranking-table" class="table table-striped table-bordered table-hover display" cellspacing="0" width="100%">
             <thead>

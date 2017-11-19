@@ -44185,7 +44185,10 @@ var render = function() {
               {
                 staticClass: "btn btn-primary",
                 attrs: { type: "button" },
-                on: { click: _vm.addGameButtonClick }
+                on: {
+                  click: _vm.addGameButtonClick,
+                  touchstart: _vm.addGameButtonClick
+                }
               },
               [_vm._v("Add Game")]
             ),
@@ -44466,7 +44469,10 @@ var render = function() {
               {
                 staticClass: "btn btn-primary",
                 attrs: { type: "button" },
-                on: { click: _vm.addPlayerButtonClick }
+                on: {
+                  click: _vm.addPlayerButtonClick,
+                  touchstart: _vm.addPlayerButtonClick
+                }
               },
               [_vm._v("Add Player")]
             ),
@@ -44662,7 +44668,10 @@ var render = function() {
           {
             staticClass: "btn btn-primary",
             attrs: { href: "#", role: "button" },
-            on: { click: _vm.addPlayerButtonClick }
+            on: {
+              click: _vm.addPlayerButtonClick,
+              touchstart: _vm.addPlayerButtonClick
+            }
           },
           [_vm._v("Add Player")]
         ),
@@ -44672,7 +44681,10 @@ var render = function() {
           {
             staticClass: "btn btn-primary",
             attrs: { href: "#", role: "button" },
-            on: { click: _vm.addGameButtonClick }
+            on: {
+              click: _vm.addGameButtonClick,
+              touchstart: _vm.addGameButtonClick
+            }
           },
           [_vm._v("Add Game")]
         )
