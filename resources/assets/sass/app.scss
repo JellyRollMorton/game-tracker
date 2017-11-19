@@ -14,7 +14,26 @@ $navbar-inverse-brand-color:                $resbi-purple !default;
 $navbar-inverse-brand-hover-color:          darken($navbar-inverse-brand-color, 15%) !default;
 $navbar-inverse-brand-hover-bg:             darken($navbar-inverse-bg, 15%) !default;
 
-// Inverted navbar links
+$btn-primary-color:              #fff !default;
+$btn-primary-bg:                 #fe9935 !default;
+$btn-primary-border:             darken($btn-primary-bg, 5%) !default;
+
+$pagination-color:                     #000 !default;
+$pagination-bg:                        #fff !default;
+$pagination-border:                    #ddd !default;
+
+$pagination-hover-color:               #000 !default;
+$pagination-hover-bg:                  #f0f0f0 !default;
+$pagination-hover-border:              #ddd !default;
+
+$pagination-active-color:              #fff !default;
+$pagination-active-bg:                 $resbi-orange !default;
+$pagination-active-border:             $resbi-orange !default;
+
+$pagination-disabled-color:            #000 !default;
+$pagination-disabled-bg:               #fff !default;
+$pagination-disabled-border:           #ddd !default;
+
 $navbar-inverse-link-color:                 #000 !default;
 $navbar-inverse-link-hover-color:           $resbi-orange !default;
 $navbar-inverse-link-active-color:          #000 !default;

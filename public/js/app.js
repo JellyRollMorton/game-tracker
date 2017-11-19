@@ -44194,7 +44194,7 @@ var render = function() {
                 attrs: { type: "button" },
                 on: { click: _vm.addGameButtonClick }
               },
-              [_vm._v("Save changes")]
+              [_vm._v("Add Game")]
             ),
             _vm._v(" "),
             _c(
