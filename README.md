@@ -13,7 +13,7 @@ The application is written in PHP, using the Laravel framework, and a PostgreSQL
 - Tokenizer PHP Extension
 - PostgreSQL 9.5+ 
 
-The instructions below assume that you are using the [Homestead](https://laravel.com/docs/5.5/homestead) (version 5.5 is recommended), however this should work in most environments as long as the requirements above are met.
+The instructions below assume that you are using the [Homestead](https://laravel.com/docs/5.5/homestead) development environment (tested using version 5.5), however this should work in most environments as long as the requirements above are met.
 
 ## Installation Instructions
 
@@ -36,7 +36,7 @@ Initialize the configuration/environment file.  If you are not using Homestead, 
 cp .env.example .env
 ```
 
-Generate the Laravel key
+Generate the Laravel application key
 
 ```shell
 php artisan key:generate
@@ -64,6 +64,6 @@ $user->email = 'test@example.com';
 $user->save();
 ```
 
-Exit tinker using Ctrl+C
+Exit tinker (Ctrl+C)
 
-The application should now be accessible via site name that was defined during the Homestead configuration. 
+The application should now be accessible via site name that was defined during the Homestead configuration, or via your web server URL.
