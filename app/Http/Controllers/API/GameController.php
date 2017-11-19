@@ -39,7 +39,9 @@ class GameController extends Controller
     {
         $validatedData = $request->validate([
             'players.*.id' => 'required',
-            'players.*.score' => 'required'
+            'players.*.score' => 'required',
+            'players.*.id' => 'distinct',
+            'players.*.score' => 'distinct'
         ]);
 
         $inputs = $request->input();

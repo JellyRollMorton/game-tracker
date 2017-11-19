@@ -111,7 +111,19 @@ return [
         ],
         'players.1.score' => [
             'required' => 'Player 2 score is required',
-        ]                             
+        ],
+        'players.0.id' => [
+            'distinct' => 'Player 1 cannot be the same as Player 2',
+        ],
+        'players.1.id' => [
+            'distinct' => 'Player 2 cannot be the same as Player 1',
+        ],        
+        'players.0.score' => [
+            'distinct' => 'Player 1 score cannot be the same as Player 2',
+        ],
+        'players.1.score' => [
+            'distinct' => 'Player 2 score cannot be the same as Player 1',
+        ]                                           
     ],
 
     /*
