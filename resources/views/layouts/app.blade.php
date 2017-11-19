@@ -11,7 +11,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Foosball</title>
+    <title>{{env('APP_NAME', 'My Application Name')}}</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/css/app.css" rel="stylesheet">
@@ -31,7 +31,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Foosball Tracker</a>
+          <a class="navbar-brand" href="#">{{env('APP_NAME', 'My Application Name')}}</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
