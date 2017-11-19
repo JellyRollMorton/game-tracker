@@ -9,7 +9,12 @@
                     </button>
                 </div>
                 <div class="modal-body">
-
+        <div class="alert alert-danger" v-if="errors.length > 0">
+        <strong>Error:</strong>
+          <li v-for="error in errors">
+          {{ error }}
+          </li>
+        </div>
        <form>
 <table id="add-game-player-table">
     <tr>
@@ -74,6 +79,11 @@
             this.enablePlayerSearchSelect2($("#player1-select"));
             this.enablePlayerSearchSelect2($("#player2-select"));
         },
+        data: function() {
+          return {
+            errors: []
+          }
+        },        
         methods: {
             enablePlayerSearchSelect2: function(selectElement) {
                 selectElement.select2({
@@ -120,6 +130,15 @@
                         $('#player2-select').val('').trigger('change');
                         $('#player2-score').val('');
                         addGameModalComponent.$bus.emit('game-added', {});
+                        addGameModalComponent.errors = [];
+                    }).fail(function(data) {
+                        var errors = []
+
+                        for (var k in data.responseJSON.errors) { 
+                          errors.push(data.responseJSON.errors[k][0]);
+                        }
+
+                        addGameModalComponent.errors = errors;
                     });
             }
         }

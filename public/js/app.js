@@ -44068,6 +44068,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
@@ -44079,6 +44084,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.enablePlayerSearchSelect2($("#player2-select"));
     },
 
+    data: function data() {
+        return {
+            errors: []
+        };
+    },
     methods: {
         enablePlayerSearchSelect2: function enablePlayerSearchSelect2(selectElement) {
             selectElement.select2({
@@ -44125,6 +44135,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 $('#player2-select').val('').trigger('change');
                 $('#player2-score').val('');
                 addGameModalComponent.$bus.emit('game-added', {});
+                addGameModalComponent.errors = [];
+            }).fail(function (data) {
+                var errors = [];
+
+                for (var k in data.responseJSON.errors) {
+                    errors.push(data.responseJSON.errors[k][0]);
+                }
+
+                addGameModalComponent.errors = errors;
             });
         }
     }
@@ -44146,7 +44165,26 @@ var render = function() {
         _c("div", { staticClass: "modal-content" }, [
           _vm._m(0, false, false),
           _vm._v(" "),
-          _vm._m(1, false, false),
+          _c("div", { staticClass: "modal-body" }, [
+            _vm.errors.length > 0
+              ? _c(
+                  "div",
+                  { staticClass: "alert alert-danger" },
+                  [
+                    _c("strong", [_vm._v("Error:")]),
+                    _vm._v(" "),
+                    _vm._l(_vm.errors, function(error) {
+                      return _c("li", [
+                        _vm._v("\n          " + _vm._s(error) + "\n          ")
+                      ])
+                    })
+                  ],
+                  2
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm._m(1, false, false)
+          ]),
           _vm._v(" "),
           _c("div", { staticClass: "modal-footer" }, [
             _c(
@@ -44199,58 +44237,56 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-body" }, [
-      _c("form", [
-        _c("table", { attrs: { id: "add-game-player-table" } }, [
-          _c("tr", [
-            _c("th"),
-            _vm._v(" "),
-            _c("th", { staticClass: "player-row" }, [_vm._v("Player 1")]),
-            _vm._v(" "),
-            _c("th", { staticClass: "player-row" }, [_vm._v("Player 2")])
-          ]),
+    return _c("form", [
+      _c("table", { attrs: { id: "add-game-player-table" } }, [
+        _c("tr", [
+          _c("th"),
           _vm._v(" "),
-          _c("tr", [
-            _c("td", [_vm._v("Name")]),
-            _vm._v(" "),
-            _c("td", { staticClass: "player-row" }, [
-              _c("div", { staticClass: "form-group" }, [
-                _c("select", {
-                  staticClass: "form-control",
-                  attrs: { id: "player1-select" }
-                })
-              ])
-            ]),
-            _vm._v(" "),
-            _c("td", { staticClass: "player-row" }, [
-              _c("div", { staticClass: "form-group" }, [
-                _c("select", {
-                  staticClass: "form-control",
-                  attrs: { id: "player2-select" }
-                })
-              ])
+          _c("th", { staticClass: "player-row" }, [_vm._v("Player 1")]),
+          _vm._v(" "),
+          _c("th", { staticClass: "player-row" }, [_vm._v("Player 2")])
+        ]),
+        _vm._v(" "),
+        _c("tr", [
+          _c("td", [_vm._v("Name")]),
+          _vm._v(" "),
+          _c("td", { staticClass: "player-row" }, [
+            _c("div", { staticClass: "form-group" }, [
+              _c("select", {
+                staticClass: "form-control",
+                attrs: { id: "player1-select" }
+              })
             ])
           ]),
           _vm._v(" "),
-          _c("tr", [
-            _c("td", [_vm._v("Score")]),
-            _vm._v(" "),
-            _c("td", { staticClass: "player-row" }, [
-              _c("div", { staticClass: "form-group" }, [
-                _c("input", {
-                  staticClass: "form-control",
-                  attrs: { type: "text", id: "player1-score" }
-                })
-              ])
-            ]),
-            _vm._v(" "),
-            _c("td", { staticClass: "player-row" }, [
-              _c("div", { staticClass: "form-group" }, [
-                _c("input", {
-                  staticClass: "form-control",
-                  attrs: { type: "text", id: "player2-score" }
-                })
-              ])
+          _c("td", { staticClass: "player-row" }, [
+            _c("div", { staticClass: "form-group" }, [
+              _c("select", {
+                staticClass: "form-control",
+                attrs: { id: "player2-select" }
+              })
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("tr", [
+          _c("td", [_vm._v("Score")]),
+          _vm._v(" "),
+          _c("td", { staticClass: "player-row" }, [
+            _c("div", { staticClass: "form-group" }, [
+              _c("input", {
+                staticClass: "form-control",
+                attrs: { type: "text", id: "player1-score" }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("td", { staticClass: "player-row" }, [
+            _c("div", { staticClass: "form-group" }, [
+              _c("input", {
+                staticClass: "form-control",
+                attrs: { type: "text", id: "player2-score" }
+              })
             ])
           ])
         ])
@@ -44352,12 +44388,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
         console.log('Component mounted.');
     },
 
+    data: function data() {
+        return {
+            errors: []
+        };
+    },
     methods: {
         addPlayerButtonClick: function addPlayerButtonClick(event) {
             var name = $('#add-player-modal-name').val();
@@ -44369,6 +44417,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 $('#add-player-modal').modal('hide');
                 $('#add-player-modal-name').val('');
                 addPlayerModalComponent.$bus.emit('player-added', {});
+                addPlayerModalComponent.errors = [];
+            }).fail(function (data) {
+                var errors = [];
+
+                for (var k in data.responseJSON.errors) {
+                    errors.push(data.responseJSON.errors[k][0]);
+                }
+
+                addPlayerModalComponent.errors = errors;
             });
         }
     }
@@ -44390,7 +44447,26 @@ var render = function() {
         _c("div", { staticClass: "modal-content" }, [
           _vm._m(0, false, false),
           _vm._v(" "),
-          _vm._m(1, false, false),
+          _c("div", { staticClass: "modal-body" }, [
+            _vm.errors.length > 0
+              ? _c(
+                  "div",
+                  { staticClass: "alert alert-danger" },
+                  [
+                    _c("strong", [_vm._v("Error:")]),
+                    _vm._v(" "),
+                    _vm._l(_vm.errors, function(error) {
+                      return _c("li", [
+                        _vm._v("\n          " + _vm._s(error) + "\n          ")
+                      ])
+                    })
+                  ],
+                  2
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm._m(1, false, false)
+          ]),
           _vm._v(" "),
           _c("div", { staticClass: "modal-footer" }, [
             _c(
@@ -44443,18 +44519,16 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-body" }, [
-      _c("form", [
-        _c("div", { staticClass: "form-group" }, [
-          _c("label", { attrs: { for: "add-player-modal-name" } }, [
-            _vm._v("Player Name")
-          ]),
-          _vm._v(" "),
-          _c("input", {
-            staticClass: "form-control",
-            attrs: { type: "text", id: "add-player-modal-name" }
-          })
-        ])
+    return _c("form", [
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", { attrs: { for: "add-player-modal-name" } }, [
+          _vm._v("Player Name")
+        ]),
+        _vm._v(" "),
+        _c("input", {
+          staticClass: "form-control",
+          attrs: { type: "text", id: "add-player-modal-name" }
+        })
       ])
     ])
   }

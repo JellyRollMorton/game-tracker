@@ -11,6 +11,13 @@
       </div>
       <div class="modal-body">
 
+        <div class="alert alert-danger" v-if="errors.length > 0">
+        <strong>Error:</strong>
+          <li v-for="error in errors">
+          {{ error }}
+          </li>
+        </div>
+
         <form>
           <div class="form-group">
             <label for="add-player-modal-name">Player Name</label>
@@ -34,6 +41,11 @@
         mounted() {
             console.log('Component mounted.')
         },
+        data: function() {
+          return {
+            errors: []
+          }
+        },
         methods: {
             addPlayerButtonClick: function(event) {
                 var name = $('#add-player-modal-name').val();
@@ -46,6 +58,15 @@
                         $('#add-player-modal').modal('hide');
                         $('#add-player-modal-name').val('');
                         addPlayerModalComponent.$bus.emit('player-added', {});
+                        addPlayerModalComponent.errors = [];
+                    }).fail(function(data) {
+                        var errors = []
+
+                        for (var k in data.responseJSON.errors) { 
+                          errors.push(data.responseJSON.errors[k][0]);
+                        }
+
+                        addPlayerModalComponent.errors = errors;
                     });
             }
         }

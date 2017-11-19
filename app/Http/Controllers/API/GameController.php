@@ -37,6 +37,11 @@ class GameController extends Controller
      */
     public function store(Request $request)
     {
+        $validatedData = $request->validate([
+            'players.*.id' => 'required',
+            'players.*.score' => 'required'
+        ]);
+
         $inputs = $request->input();
 
         $game = new Game;

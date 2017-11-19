@@ -100,9 +100,18 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'players.0.id' => [
+            'required' => 'Player 1 name is required',
         ],
+        'players.0.score' => [
+            'required' => 'Player 1 score is required',
+        ],   
+        'players.1.id' => [
+            'required' => 'Player 2 name is required',
+        ],
+        'players.1.score' => [
+            'required' => 'Player 2 score is required',
+        ]                             
     ],
 
     /*

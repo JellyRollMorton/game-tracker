@@ -36,6 +36,10 @@ class PlayerController extends Controller
      */
     public function store(Request $request)
     {
+        $validatedData = $request->validate([
+            'name' => 'required'
+        ]);
+
         $player = new Player;
         $player->name = $request->input('name');
         $player->save();
