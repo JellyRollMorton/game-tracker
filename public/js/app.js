@@ -44457,10 +44457,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     console.log('Dashboard mounted.');
+
+    $(document).ready(function () {
+      $('#example').DataTable({
+        "ajax": '/api/player_rankings'
+      });
+    });
   },
 
   methods: {
@@ -44509,12 +44526,40 @@ var render = function() {
           },
           [_vm._v("Add Game")]
         )
-      ])
+      ]),
+      _vm._v(" "),
+      _vm._m(0, false, false)
     ],
     1
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "table",
+      {
+        staticClass: "display",
+        attrs: { id: "example", cellspacing: "0", width: "100%" }
+      },
+      [
+        _c("thead", [
+          _c("tr", [
+            _c("th", [_vm._v("Rank")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Name")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Wins")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Losses")])
+          ])
+        ])
+      ]
+    )
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

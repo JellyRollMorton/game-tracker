@@ -15,4 +15,5 @@ Route::get('/', 'DashboardController@show');
 Route::get('api/players/search', 'API\PlayerController@search');
 Route::apiResource('api/players', 'API\PlayerController');
 Route::apiResource('api/games', 'API\GameController');
+Route::apiResource('api/player_rankings', 'API\PlayerRankingsController');
 Route::resource('players', 'PlayerController');

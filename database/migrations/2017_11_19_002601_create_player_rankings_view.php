@@ -22,23 +22,29 @@ class CreatePlayerRankingsView extends Migration
                     PARTITION BY game_id 
                     ORDER BY score DESC) game_rank 
          FROM   game_players) 
-SELECT Row_number() 
-         over ( 
-           ORDER BY win_ratio DESC), 
-       player_id, 
-       win_count, 
-       loss_count, 
-       win_ratio, 
+
+
+select  player_id,
+win_count,
+loss_count,
+win_ratio,
        Rank() 
          over ( 
            ORDER BY win_ratio DESC) 
+
+            from (
+
+SELECT 
+       player_id, 
+       win_count, 
+       loss_count, 
+
+       case when win_count = 0 then 0 else
+       win_count / (win_count + loss_count) :: float
+       end win_ratio
 FROM   (SELECT players.id              player_id, 
                Coalesce(win_count, 0)  win_count, 
-               Coalesce(loss_count, 0) loss_count, 
-               Coalesce(( win_count / ( win_count + loss_count ) :: FLOAT ) :: 
-                        FLOAT, 0 
-                      ) 
-                                       win_ratio 
+               Coalesce(loss_count, 0) loss_count
         FROM   players 
                left join (SELECT player_id, 
                                  Count(*) win_count 
@@ -57,7 +63,7 @@ FROM   (SELECT players.id              player_id,
                                   FROM   ranked_games) game_wins 
                           WHERE  game_rank != 1 
                           GROUP  BY player_id) loss_table 
-                      ON loss_table.player_id = players.id) win_ratios; 
+                      ON loss_table.player_id = players.id)win_totals) win_ratios
                       ");
     }
 

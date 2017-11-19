@@ -9,6 +9,17 @@
     <a class="btn btn-primary" v-on:click="addGameButtonClick" href="#" role="button">Add Game</a>
 
   </div>
+
+  <table id="example" class="display" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Name</th>
+                <th>Wins</th>
+                <th>Losses</th>
+            </tr>
+        </thead>
+    </table>
 </div>
 
 </template>
@@ -17,6 +28,13 @@
     export default {
         mounted() {
             console.log('Dashboard mounted.');
+
+                  $(document).ready(function() {
+          $('#example').DataTable( {
+              "ajax": '/api/player_rankings'
+          } );
+      } );
+
         },
         methods: {
           addGameButtonClick: function(event) {
