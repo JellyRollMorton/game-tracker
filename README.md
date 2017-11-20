@@ -1,6 +1,6 @@
 ## About Game Tracker
 
-Game Tracker can be used to track and rank players in any two-player game with scores.  It was initially developed to track Foosball player rankings.
+Game Tracker can be used to track and rank players in any two-player game with scores.  It was initially developed to track foosball player rankings.
 
 ## Requirements
 
@@ -66,4 +66,4 @@ $user->save();
 
 Exit tinker (Ctrl+C)
 
-The application should now be accessible via site name that was defined during the Homestead configuration, or via your web server URL.
+The application should now be accessible via site name that was defined when Homestead was configured, or via your web server URL.
