@@ -44609,6 +44609,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     created: function created() {
@@ -44678,6 +44681,8 @@ var render = function() {
         )
       ]),
       _vm._v(" "),
+      _c("div", { staticStyle: { clear: "both", "padding-top": "10px" } }),
+      _vm._v(" "),
       _vm._m(0, false, false)
     ],
     1
@@ -44688,26 +44693,28 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "table",
-      {
-        staticClass: "table table-striped table-bordered table-hover display",
-        attrs: { id: "player-ranking-table", cellspacing: "0", width: "100%" }
-      },
-      [
-        _c("thead", [
-          _c("tr", [
-            _c("th", [_vm._v("Rank")]),
-            _vm._v(" "),
-            _c("th", [_vm._v("Name")]),
-            _vm._v(" "),
-            _c("th", [_vm._v("Wins")]),
-            _vm._v(" "),
-            _c("th", [_vm._v("Losses")])
+    return _c("div", [
+      _c(
+        "table",
+        {
+          staticClass: "table table-striped table-bordered table-hover display",
+          attrs: { id: "player-ranking-table", cellspacing: "0", width: "100%" }
+        },
+        [
+          _c("thead", [
+            _c("tr", [
+              _c("th", [_vm._v("Rank")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Name")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Wins")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Losses")])
+            ])
           ])
-        ])
-      ]
-    )
+        ]
+      )
+    ])
   }
 ]
 render._withStripped = true

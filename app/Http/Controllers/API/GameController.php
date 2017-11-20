@@ -43,7 +43,7 @@ class GameController extends Controller
             $game = new Game;
             $game->save();
 
-            // create a gamePlayer record for each player's score in the game
+            // create a GamePlayer record for each player's score in the game
             foreach ($inputs['players'] as $playerAttrs) {
                 $gamePlayer = new GamePlayer;
                 $gamePlayer->game_id = $game->id;

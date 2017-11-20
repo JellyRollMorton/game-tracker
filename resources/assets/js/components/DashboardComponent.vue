@@ -6,16 +6,19 @@
             <a class="btn btn-primary" v-on:click="addPlayerButtonClick" href="#" role="button">Add Player</a>
             <a class="btn btn-primary" v-on:click="addGameButtonClick" href="#" role="button">Add Game</a>
         </div>
-        <table id="player-ranking-table" class="table table-striped table-bordered table-hover display" cellspacing="0" width="100%">
-            <thead>
-                <tr>
-                    <th>Rank</th>
-                    <th>Name</th>
-                    <th>Wins</th>
-                    <th>Losses</th>
-                </tr>
-            </thead>
-        </table>
+        <div style="clear: both; padding-top: 10px"></div>
+        <div>
+            <table id="player-ranking-table" class="table table-striped table-bordered table-hover display" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Wins</th>
+                        <th>Losses</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
     </div>
 </template>
 
