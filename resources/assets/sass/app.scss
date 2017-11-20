@@ -9,6 +9,10 @@
 $resbi-orange:								#fe9935;
 $resbi-purple:								#410242;
 
+.logo-icon {
+	color: $resbi-orange;
+}
+
 $navbar-inverse-bg:                         #f0f0f0 !default;
 $navbar-inverse-brand-color:                $resbi-purple !default;
 $navbar-inverse-brand-hover-color:          darken($navbar-inverse-brand-color, 15%) !default;
